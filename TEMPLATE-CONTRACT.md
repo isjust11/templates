@@ -42,7 +42,7 @@ Sau này publish GitHub:
 
 `next.config.ts` → thêm vào `transpilePackages`.
 
-`components/base/template-registry.tsx`:
+`wedding-invite/components/base/template-registry.tsx`:
 
 ```ts
 import Floral from '@eventlab/template-floral-wedding';

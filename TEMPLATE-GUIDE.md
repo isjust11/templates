@@ -21,7 +21,7 @@ Khi bạn muốn thêm một thiết kế mới (ví dụ: `floral-wedding`), qu
 1.  **Clone code**: Tải code template mới vào chung thư mục `templates/`.
 2.  **Khai báo Package**: Khai báo dependency trong `package.json` của thư mục Host trỏ tới template mới. Lúc dev sẽ trỏ qua file local (`"file:../floral-wedding"`), khi lên production có thể trỏ về Github repo.
 3.  **Cấu hình Next.js**: Thêm tên package mới vào mảng `transpilePackages` trong file `next.config.ts` của Host để Next.js biên dịch được mã nguồn từ node_modules.
-4.  **Đăng ký vào Registry**: Mở file `components/base/template-registry.tsx` của Host, import template mới và đưa vào object `TEMPLATE_REGISTRY` với **key chính là id trong file `eventlab.template.json`**.
+4.  **Đăng ký vào Registry**: Mở file **`wedding-invite/components/base/template-registry.tsx`** (Host — không nằm trong package template), import template mới và đưa vào object `TEMPLATE_REGISTRY` với **key chính là id trong file `eventlab.template.json`**.
     ```typescript
     import Floral from '@eventlab/template-floral-wedding';
     
@@ -32,6 +32,9 @@ Khi bạn muốn thêm một thiết kế mới (ví dụ: `floral-wedding`), qu
       'floral-wedding': Floral, // id phải trùng với eventlab.template.json
     };
     ```
+
+    Đường dẫn đầy đủ trong monorepo:
+    `templates/wedding-invite/components/base/template-registry.tsx`
 
 ## 4. Luồng xử lý dữ liệu từ Backend (NestJS)
 1.  Quản trị viên tạo một Event và gán template có `slug` (hoặc id) là `"floral-wedding"` cho sự kiện đó. Schema dữ liệu được lấy từ `slots.schema.json`.
