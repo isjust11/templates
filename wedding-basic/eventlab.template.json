@@ -1,0 +1,7 @@
+{
+  "id": "wedding-basic",
+  "name": "Wedding Basic",
+  "entry": "./src/index.tsx",
+  "schema": "./slots.schema.json",
+  "defaultExport": "React component receiving { data }"
+}

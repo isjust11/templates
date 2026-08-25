@@ -1,0 +1,21 @@
+{
+  "name": "@eventlab/template-wedding-invite2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EventLab template package — slug wedding-invite2. Clone-compatible GitHub repo.",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./schema": "./slots.schema.json",
+    "./eventlab.template.json": "./eventlab.template.json"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2"
+  }
+}

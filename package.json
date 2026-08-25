@@ -1,0 +1,17 @@
+{
+  "name": "eventlab-templates",
+  "private": true,
+  "description": "Sandbox: 1 Next host + N template packages (file: now, github: later).",
+  "workspaces": [
+    "wedding-invite",
+    "wedding-basic",
+    "wedding-invite2"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=wedding-invitation"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2"
+  }
+}

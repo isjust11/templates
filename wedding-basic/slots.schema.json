@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeddingBasicTemplateSlots",
+  "description": "Typed data contract for wedding-basic single-page template",
+  "type": "object",
+  "required": [
+    "brideName",
+    "groomName",
+    "eventDate",
+    "eventDateDisplay",
+    "city",
+    "venue"
+  ],
+  "properties": {
+    "brideName": { "type": "string", "slot": "text.brideName" },
+    "groomName": { "type": "string", "slot": "text.groomName" },
+    "eventDate": {
+      "type": "string",
+      "format": "date-time",
+      "slot": "datetime.eventDate"
+    },
+    "eventDateDisplay": { "type": "string", "slot": "text.eventDateDisplay" },
+    "city": { "type": "string", "slot": "text.city" },
+    "venue": { "type": "string", "slot": "text.venue" },
+    "hosts": { "type": "string", "slot": "text.hosts" },
+    "mapsUrl": { "type": "string", "slot": "url.maps" },
+    "welcomeLines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "slot": "text.welcomeLines"
+    },
+    "welcomeHighlightLineIndex": {
+      "type": "integer",
+      "slot": "number.welcomeHighlightLineIndex"
+    },
+    "scheduleIntro": { "type": "string", "slot": "text.scheduleIntro" },
+    "schedule": {
+      "type": "array",
+      "slot": "list.schedule",
+      "items": {
+        "type": "object",
+        "required": ["time", "title", "description", "image", "side"],
+        "properties": {
+          "time": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string" },
+          "side": { "enum": ["left", "right"] }
+        }
+      }
+    },
+    "eventNote": { "type": "string", "slot": "text.eventNote" },
+    "footerMessage": { "type": "string", "slot": "text.footerMessage" },
+    "footerCredit": { "type": "string", "slot": "text.footerCredit" },
+    "locale": { "type": "string", "slot": "text.locale" }
+  }
+}

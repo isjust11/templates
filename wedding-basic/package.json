@@ -1,0 +1,25 @@
+{
+  "name": "@eventlab/template-wedding-basic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EventLab template package — slug wedding-basic. Clone-compatible GitHub repo.",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./schema": "./slots.schema.json",
+    "./eventlab.template.json": "./eventlab.template.json"
+  },
+  "peerDependencies": {
+    "canvas-confetti": "^1.9.0",
+    "framer-motion": "^11.0.0",
+    "next": ">=15",
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2"
+  }
+}
