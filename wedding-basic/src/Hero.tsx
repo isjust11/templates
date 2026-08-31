@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
+import InlineSlotEditor from './InlineSlotEditor';
 
 export default function Hero() {
   const { brideName, groomName, eventDateDisplay, city, venue } =
@@ -34,7 +35,9 @@ export default function Hero() {
             className="text-sage-600 text-sm uppercase tracking-[0.3em] mb-8 font-sans font-medium"
             data-slot="text.eventDateDisplay"
           >
-            {eventDateDisplay}
+            <InlineSlotEditor slotKey="eventDateDisplay" label="Ngày hiển thị" value={eventDateDisplay}>
+              {eventDateDisplay}
+            </InlineSlotEditor>
           </motion.p>
 
           <motion.div
@@ -47,7 +50,9 @@ export default function Hero() {
               className="font-display text-7xl md:text-9xl lg:text-[10rem] text-sage-800 mb-6 leading-none"
               data-slot="text.groomName"
             >
-              {groomName}
+              <InlineSlotEditor slotKey="groomName" label="Tên chú rể" value={groomName}>
+                {groomName}
+              </InlineSlotEditor>
             </h1>
             <div className="flex items-center justify-center gap-8 mb-6">
               <div className="h-px w-20 md:w-32 bg-sage-300" />
@@ -60,7 +65,9 @@ export default function Hero() {
               className="font-display text-7xl md:text-9xl lg:text-[10rem] text-sage-800 leading-none"
               data-slot="text.brideName"
             >
-              {brideName}
+              <InlineSlotEditor slotKey="brideName" label="Tên cô dâu" value={brideName}>
+                {brideName}
+              </InlineSlotEditor>
             </h1>
           </motion.div>
 
@@ -74,13 +81,17 @@ export default function Hero() {
               className="text-lg md:text-xl text-sage-700 font-serif"
               data-slot="text.venue"
             >
-              {venue}
+              <InlineSlotEditor slotKey="venue" label="Địa điểm" value={venue}>
+                {venue}
+              </InlineSlotEditor>
             </p>
             <p
               className="text-base md:text-lg text-sage-600"
               data-slot="text.city"
             >
-              {city}
+              <InlineSlotEditor slotKey="city" label="Thành phố" value={city}>
+                {city}
+              </InlineSlotEditor>
             </p>
           </motion.div>
 

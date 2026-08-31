@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useTemplateData } from './TemplateDataProvider';
+import InlineSlotEditor from './InlineSlotEditor';
 
 export default function EventDetails() {
   const {
@@ -44,7 +45,9 @@ export default function EventDetails() {
               className="text-sage-800 font-serif text-2xl md:text-3xl"
               data-slot="text.eventDateDisplay"
             >
-              {eventDateDisplay}
+              <InlineSlotEditor slotKey="eventDateDisplay" label="Ngày hiển thị" value={eventDateDisplay}>
+                {eventDateDisplay}
+              </InlineSlotEditor>
             </p>
           </motion.div>
 
@@ -61,10 +64,14 @@ export default function EventDetails() {
               className="text-sage-800 font-display text-3xl md:text-5xl mb-3"
               data-slot="text.venue"
             >
-              {venue}
+              <InlineSlotEditor slotKey="venue" label="Tên địa điểm" value={venue}>
+                {venue}
+              </InlineSlotEditor>
             </p>
             <p className="text-sage-600 font-serif text-lg" data-slot="text.city">
-              {city}
+              <InlineSlotEditor slotKey="city" label="Thành phố" value={city}>
+                {city}
+              </InlineSlotEditor>
             </p>
           </motion.div>
 
@@ -81,7 +88,9 @@ export default function EventDetails() {
               className="text-sage-800 font-display text-3xl md:text-5xl mb-3"
               data-slot="text.hosts"
             >
-              {hosts}
+              <InlineSlotEditor slotKey="hosts" label="Chủ trì / Đại diện" value={hosts}>
+                {hosts}
+              </InlineSlotEditor>
             </p>
           </motion.div>
 
@@ -97,7 +106,9 @@ export default function EventDetails() {
               className="text-sage-700 font-serif text-lg leading-relaxed mb-8"
               data-slot="text.eventNote"
             >
-              {eventNote}
+              <InlineSlotEditor slotKey="eventNote" label="Ghi chú / Dặn dò" type="textarea" value={eventNote}>
+                {eventNote}
+              </InlineSlotEditor>
             </p>
           </motion.div>
 
