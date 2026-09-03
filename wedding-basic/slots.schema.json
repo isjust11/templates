@@ -12,6 +12,13 @@
     "venue"
   ],
   "properties": {
+    "coverImage": { "type": "string", "slot": "image.cover" },
+    "backgroundImage": { "type": "string", "slot": "image.background" },
+    "album": {
+      "type": "array",
+      "items": { "type": "string" },
+      "slot": "list.album"
+    },
     "brideName": { "type": "string", "slot": "text.brideName" },
     "groomName": { "type": "string", "slot": "text.groomName" },
     "eventDate": {

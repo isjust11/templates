@@ -8,6 +8,9 @@ export type ScheduleItem = {
 
 /** Typed slot payload for this template repo (`slots.schema.json`). */
 export type TemplateEventData = {
+  coverImage?: string;
+  backgroundImage?: string;
+  album?: string[];
   brideName: string;
   groomName: string;
   eventDate: string;
@@ -26,71 +29,20 @@ export type TemplateEventData = {
   locale: string;
 };
 
-export type SampleId = 'aidana-dias' | 'minh-anh-hoang-nam';
+export type SampleId = 'my-wedding';
 
 export const SAMPLE_META: Record<
   SampleId,
   { label: string; description: string }
 > = {
-  'aidana-dias': {
-    label: 'Aidana & Dias (gốc)',
-    description: 'Dữ liệu mặc định từ repo wedding-basic',
-  },
-  'minh-anh-hoang-nam': {
+  'my-wedding': {
     label: 'Minh Anh & Hoàng Nam',
     description: 'Sample Việt Nam — chứng minh đổ data theo typed slots',
   },
 };
 
 export const SAMPLES: Record<SampleId, TemplateEventData> = {
-  'aidana-dias': {
-    brideName: 'Aidana',
-    groomName: 'Dias',
-    eventDate: '2026-03-06T18:00:00',
-    eventDateDisplay: '6 наурыз 2026',
-    city: 'Қызылорда қаласы',
-    venue: 'Dariya ресторан',
-    hosts: 'Бек & Жанар',
-    mapsUrl: 'https://go.2gis.com/Cv0gu',
-    welcomeLines: [
-      'Құрметті қонақтар,',
-      'сіздерді ұлымыз бен келініміз',
-      '',
-      'Диас & Айдананың',
-      '',
-      'Ақ отау тігіп, үлкен өмірге бірге',
-      'қадам басатын қуанышты сәтіне',
-      'және үйлену тойына арналған ақ дастарханымыздың',
-      'қадірлі қонағы болуға сіздер шын жүректен шақырамыз!',
-    ],
-    welcomeHighlightLineIndex: 3,
-    scheduleIntro:
-      '6 наурыз күні не болатынын біліңіз. Барлық іс-шаралар Dariya ресторанында өтеді.',
-    schedule: [
-      {
-        time: '16:30',
-        title: 'Қонақтарды қарсы алу',
-        description: 'Барлық қонақтарды Dariya ресторанына шақырамыз.',
-        image:
-          'https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&q=80',
-        side: 'left',
-      },
-      {
-        time: '17:00',
-        title: 'Тойдың басталуы',
-        description: 'Уақытында келуіңізді сұраймыз. Көріскенше!',
-        image:
-          'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',
-        side: 'right',
-      },
-    ],
-    eventNote:
-      'Барлық іс-шаралар бір орында өтеді. Паркингке орын бар. Қосымша сұрақтар туындаса, бізге хабарласыңыз.',
-    footerMessage: 'Сіздерді тойымызда көруге асығамыз!',
-    footerCredit: 'Махаббатпен жасалған • 2026',
-    locale: 'kk-KZ',
-  },
-  'minh-anh-hoang-nam': {
+  'my-wedding': {
     brideName: 'Minh Anh',
     groomName: 'Hoàng Nam',
     eventDate: '2026-10-18T17:30:00',
@@ -147,10 +99,10 @@ export const SAMPLES: Record<SampleId, TemplateEventData> = {
   },
 };
 
-export function getSampleData(id: SampleId = 'minh-anh-hoang-nam'): TemplateEventData {
+export function getSampleData(id: SampleId = 'my-wedding'): TemplateEventData {
   return SAMPLES[id];
 }
 
 export function isSampleId(value: string | null | undefined): value is SampleId {
-  return value === 'aidana-dias' || value === 'minh-anh-hoang-nam';
+  return value === 'my-wedding';
 }

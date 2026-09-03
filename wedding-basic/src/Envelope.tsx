@@ -7,11 +7,12 @@ interface EnvelopeProps {
   children: React.ReactNode;
   brideName: string;
   groomName: string;
+  coverImage?: string;
 }
 
 type ConfettiFunction = (options?: unknown) => void;
 
-export default function Envelope({ children, brideName, groomName }: EnvelopeProps) {
+export default function Envelope({ children, brideName, groomName, coverImage }: EnvelopeProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -106,12 +107,14 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.8 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-cream-50 via-white to-cream-100 overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
+            style={{ background: 'radial-gradient(ellipse at 50% 30%, #ffc9d9 0%, #fff0f4 40%, #ffffff 100%)' }}
           >
-            {/* Background decorations */}
+            {/* Floating blobs */}
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-sage-200/20 rounded-full blur-3xl" />
-              <div className="absolute bottom-20 right-10 w-96 h-96 bg-cream-200/20 rounded-full blur-3xl" />
+              <div className="absolute top-10 left-10 w-80 h-80 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,180,210,0.3) 0%, transparent 70%)' }} />
+              <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,150,190,0.2) 0%, transparent 70%)' }} />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,200,220,0.15) 0%, transparent 60%)' }} />
             </div>
 
             <div className="relative z-10 max-w-2xl w-full px-4">
@@ -126,18 +129,23 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
                 transition={{ duration: 1, delay: 0.3 }}
               >
                 {/* Envelope body */}
-                <div className="relative bg-gradient-to-br from-cream-100 to-cream-200 rounded-lg shadow-2xl overflow-hidden border-2 border-sage-300 aspect-[3/2] flex items-center justify-center">
-                  {/* Decorative pattern */}
-                  <div className="absolute inset-0 opacity-10">
+                <div className="relative bg-white/40 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden border border-white/60 aspect-[3/2] flex items-center justify-center">
+                  <div className={`absolute inset-0 ${coverImage ? 'opacity-80' : 'opacity-100'}`}>
                     <div className="absolute inset-0" style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                      backgroundImage: coverImage
+                        ? `url("${coverImage}")`
+                        : 'linear-gradient(135deg, #fff0f4 0%, #ffc9d9 100%)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
                     }} />
                   </div>
 
                   {/* Envelope flap */}
                   <motion.div
-                    className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-br from-sage-500 to-sage-600 origin-top border-b-2 border-sage-700"
+                    className="absolute top-0 left-0 right-0 h-1/2 origin-top border-b-2"
                     style={{
+                      background: 'linear-gradient(135deg, #ff9db7, #ef4065)',
+                      borderColor: '#c9244d',
                       clipPath: 'polygon(0 0, 50% 60%, 100% 0)',
                       transformStyle: 'preserve-3d',
                     }}
@@ -155,9 +163,14 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
                     }}
                   />
 
-                  {/* Letter sliding out */}
+                  {/* Letter content */}
                   <motion.div
-                    className="absolute inset-x-4 top-4 bottom-4 bg-white mt-6 rounded shadow-lg flex items-center justify-center"
+                    className="absolute inset-x-4 top-4 bottom-4 mt-6 rounded-xl flex items-center justify-center"
+                    style={{
+                      background: 'rgba(255,255,255,0.85)',
+                      backdropFilter: 'blur(8px)',
+                      boxShadow: '0 8px 32px rgba(255,100,140,0.15)',
+                    }}
                     initial={{ y: 40, opacity: 0 }}
                     animate={{
                       y: isOpening ? -20 : 40,
@@ -170,14 +183,19 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
                     }}
                   >
                     <div className="text-center p-4">
-                      <p className="text-sage-400 text-xs uppercase tracking-[0.2em] mb-2 font-sans">Шақыру</p>
-                      <p className="font-script text-2xl text-sage-700">{groomName} & {brideName}</p>
+                      <p className="text-petal-400 text-xs uppercase tracking-[0.2em] mb-2 font-sans">Thiệp mời</p>
+                      <p className="font-script text-2xl text-petal-700">{groomName} & {brideName}</p>
                     </div>
                   </motion.div>
 
-                  {/* Wax seal - centered on envelope */}
+                  {/* Wax seal */}
                   <motion.div
-                    className="absolute left-1/2.5 top-20 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-sage-600 shadow-xl flex items-center justify-center border-4 border-sage-700 z-20"
+                    className="absolute left-1/2 top-20 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full flex items-center justify-center border-4 z-20"
+                    style={{
+                      background: 'linear-gradient(135deg, #ff9db7, #ef4065)',
+                      borderColor: '#c9244d',
+                      boxShadow: '0 6px 24px rgba(255,100,140,0.4)',
+                    }}
                     animate={{
                       scale: isOpening ? [1, 1.2, 0] : 1,
                       rotate: isOpening ? [0, 15, -10] : 0,
@@ -197,16 +215,16 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
                   className="text-center mt-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isOpening ? 0 : 1 }}
-                  transition={{ delay: 1.5, duration: 0.3 }}
+                  transition={{ delay: 1.2, duration: 0.3 }}
                 >
-                  <p className="text-sage-600 text-sm font-sans mb-2">
-                    Шақыруды ашу үшін конвертті басыңыз
+                  <p className="text-petal-600 text-sm font-sans mb-3">
+                    Nhấn vào phong bì để mở thiệp mời
                   </p>
                   <button
                     onClick={handleSkip}
-                    className="text-sage-400 text-xs uppercase tracking-wider hover:text-sage-600 transition-colors font-sans"
+                    className="text-petal-400 text-xs uppercase tracking-wider hover:text-petal-600 transition-colors font-sans"
                   >
-                    Өткізу
+                    Bỏ qua
                   </button>
                 </motion.div>
               </motion.div>
@@ -233,8 +251,8 @@ export default function Envelope({ children, brideName, groomName }: EnvelopePro
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
             transition={{ duration: 0.3, delay: 1 }}
-            onClick={toggleMute}
-            className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-sage-800 text-cream-50 shadow-lg hover:bg-sage-900 transition-colors flex items-center justify-center"
+            className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #ff9db7, #ef4065)', boxShadow: '0 6px 24px rgba(255,100,140,0.3)' }}
             aria-label={isMuted ? 'Unmute music' : 'Mute music'}
           >
             {isMuted ? (

@@ -5,132 +5,182 @@ import { useTemplateData } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
 
 export default function Hero() {
-  const { brideName, groomName, eventDateDisplay, city, venue } =
+  const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } =
     useTemplateData();
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-4 overflow-hidden bg-cream-50"
+      className="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-4 overflow-hidden"
+      style={{
+        background: 'radial-gradient(ellipse at 60% 0%, #ffc9d9 0%, #fff0f4 40%, #fff5f7 70%, #ffffff 100%)',
+      }}
     >
-      <div className="absolute inset-0 opacity-5">
+      {/* Background image layer */}
+      {backgroundImage && (
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233e4034' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("${backgroundImage}")`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.08,
           }}
         />
+      )}
+
+      {/* Floating orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ y: [0, -30, 0], x: [0, 15, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-20 left-[10%] w-80 h-80 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,150,180,0.25) 0%, transparent 70%)' }}
+        />
+        <motion.div
+          animate={{ y: [0, 20, 0], x: [0, -20, 0] }}
+          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute bottom-20 right-[10%] w-96 h-96 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,180,200,0.2) 0%, transparent 70%)' }}
+        />
+        <motion.div
+          animate={{ y: [0, -15, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          className="absolute top-1/3 right-[15%] w-48 h-48 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,200,215,0.3) 0%, transparent 70%)' }}
+        />
+      </div>
+
+      {/* Glass petals decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: [0, 0.6, 0], scale: [0.5, 1, 0.5], y: [-20, 20, -20] }}
+            transition={{ duration: 6 + i, repeat: Infinity, delay: i * 1.2, ease: 'easeInOut' }}
+            className="absolute text-petal-300"
+            style={{
+              left: `${10 + i * 15}%`,
+              top: `${15 + (i % 3) * 25}%`,
+              fontSize: `${14 + (i % 3) * 8}px`,
+            }}
+          >
+            ✿
+          </motion.div>
+        ))}
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-sage-600 text-sm uppercase tracking-[0.3em] mb-8 font-sans font-medium"
-            data-slot="text.eventDateDisplay"
-          >
-            <InlineSlotEditor slotKey="eventDateDisplay" label="Ngày hiển thị" value={eventDateDisplay}>
-              {eventDateDisplay}
-            </InlineSlotEditor>
-          </motion.p>
-
+          {/* Date pill */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mb-12"
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="inline-flex items-center gap-3 mb-10"
           >
-            <h1
-              className="font-display text-7xl md:text-9xl lg:text-[10rem] text-sage-800 mb-6 leading-none"
+            <div className="h-px w-12 bg-petal-300" />
+            <span
+              className="text-petal-600 text-xs uppercase tracking-[0.35em] font-sans font-medium px-4 py-1.5 rounded-full border border-petal-200"
+              style={{ background: 'rgba(255,200,215,0.3)', backdropFilter: 'blur(8px)' }}
+              data-slot="text.eventDateDisplay"
+            >
+              <InlineSlotEditor slotKey="eventDateDisplay" label="Ngày hiển thị" value={eventDateDisplay}>
+                {eventDateDisplay}
+              </InlineSlotEditor>
+            </span>
+            <div className="h-px w-12 bg-petal-300" />
+          </motion.div>
+
+          {/* Names */}
+          <div className="mb-10">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.9 }}
+              className="font-display text-7xl md:text-[9rem] lg:text-[11rem] leading-none text-petal-800 mb-3"
               data-slot="text.groomName"
             >
               <InlineSlotEditor slotKey="groomName" label="Tên chú rể" value={groomName}>
                 {groomName}
               </InlineSlotEditor>
-            </h1>
-            <div className="flex items-center justify-center gap-8 mb-6">
-              <div className="h-px w-20 md:w-32 bg-sage-300" />
-              <span className="text-3xl md:text-4xl text-sage-600 font-serif italic">
-                &
-              </span>
-              <div className="h-px w-20 md:w-32 bg-sage-300" />
-            </div>
-            <h1
-              className="font-display text-7xl md:text-9xl lg:text-[10rem] text-sage-800 leading-none"
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="flex items-center justify-center gap-6 my-4"
+            >
+              <div className="h-px flex-1 max-w-[100px]" style={{ background: 'linear-gradient(to right, transparent, #ffb3c3)' }} />
+              <span className="font-script text-4xl text-petal-400">{'&'}</span>
+              <div className="h-px flex-1 max-w-[100px]" style={{ background: 'linear-gradient(to left, transparent, #ffb3c3)' }} />
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.9 }}
+              className="font-display text-7xl md:text-[9rem] lg:text-[11rem] leading-none text-petal-800"
               data-slot="text.brideName"
             >
               <InlineSlotEditor slotKey="brideName" label="Tên cô dâu" value={brideName}>
                 {brideName}
               </InlineSlotEditor>
-            </h1>
-          </motion.div>
+            </motion.h1>
+          </div>
 
+          {/* Venue info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="space-y-3 mb-12"
+            transition={{ delay: 1, duration: 0.8 }}
+            className="space-y-2 mb-12"
           >
             <p
-              className="text-lg md:text-xl text-sage-700 font-serif"
+              className="text-lg md:text-xl text-petal-700 font-serif italic"
               data-slot="text.venue"
             >
               <InlineSlotEditor slotKey="venue" label="Địa điểm" value={venue}>
                 {venue}
               </InlineSlotEditor>
             </p>
-            <p
-              className="text-base md:text-lg text-sage-600"
-              data-slot="text.city"
-            >
+            <p className="text-sm text-petal-500 font-sans uppercase tracking-widest" data-slot="text.city">
               <InlineSlotEditor slotKey="city" label="Thành phố" value={city}>
                 {city}
               </InlineSlotEditor>
             </p>
           </motion.div>
 
+          {/* Glass CTA button */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
           >
             <a
               href="#countdown"
-              className="inline-block bg-sage-800 hover:bg-sage-900 text-cream-50 px-10 py-4 rounded-full font-sans text-sm font-medium uppercase tracking-wider transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full font-sans text-sm font-medium text-petal-700 uppercase tracking-wider transition-all duration-300 hover:shadow-petal"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,220,232,0.5))',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,180,200,0.5)',
+                boxShadow: '0 4px 20px rgba(255,100,140,0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
+              }}
             >
-              ↓
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="mt-20"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="inline-block"
-            >
-              <svg
-                className="w-6 h-6 text-sage-400"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <span>Khám phá</span>
+              <motion.span
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-              </svg>
-            </motion.div>
+                ↓
+              </motion.span>
+            </a>
           </motion.div>
         </motion.div>
       </div>
