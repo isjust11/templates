@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { useTemplateData } from './TemplateDataProvider';
+import { getFieldValue, getFieldStyle } from './types';
 
 export default function WeddingDay() {
   const { schedule, scheduleIntro } = useTemplateData();
@@ -36,8 +37,8 @@ export default function WeddingDay() {
             <span className="text-petal-300 text-lg">✿</span>
             <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, #ffb3c3)' }} />
           </div>
-          <p className="text-petal-600 font-serif text-lg max-w-2xl mx-auto leading-relaxed italic">
-            {scheduleIntro}
+          <p className="text-petal-600 font-serif text-lg max-w-2xl mx-auto leading-relaxed italic" style={getFieldStyle(scheduleIntro)}>
+            {getFieldValue(scheduleIntro)}
           </p>
         </motion.div>
 
@@ -83,15 +84,16 @@ export default function WeddingDay() {
                         background: 'rgba(255,180,200,0.2)',
                         border: '1px solid rgba(255,180,200,0.4)',
                         color: '#ef4065',
+                        ...getFieldStyle(event.time)
                       }}
                     >
-                      {event.time}
+                      {getFieldValue(event.time)}
                     </span>
-                    <h3 className="font-display text-3xl md:text-4xl text-petal-800 mb-3">
-                      {event.title}
+                    <h3 className="font-display text-3xl md:text-4xl text-petal-800 mb-3" style={getFieldStyle(event.title)}>
+                      {getFieldValue(event.title)}
                     </h3>
-                    <p className="text-petal-600 font-serif leading-relaxed">
-                      {event.description}
+                    <p className="text-petal-600 font-serif leading-relaxed" style={getFieldStyle(event.description)}>
+                      {getFieldValue(event.description)}
                     </p>
                   </div>
 
@@ -104,8 +106,8 @@ export default function WeddingDay() {
                       }}
                     >
                       <Image
-                        src={event.image}
-                        alt={event.title}
+                        src={event.image || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800'}
+                        alt={getFieldValue(event.title) || 'Event image'}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-700"
                         sizes="(max-width: 768px) 100vw, 50vw"

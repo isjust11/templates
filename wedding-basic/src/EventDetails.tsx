@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
+import { getFieldValue, getFieldStyle } from './types';
 
 export default function EventDetails() {
   const { venue, city, eventDateDisplay, hosts, mapsUrl, eventNote } = useTemplateData();
@@ -76,10 +77,11 @@ export default function EventDetails() {
               </p>
               <p
                 className="font-display text-2xl md:text-3xl text-petal-800"
+                style={getFieldStyle(value)}
                 data-slot={`text.${slot}`}
               >
                 <InlineSlotEditor slotKey={slot as never} label={editorLabel} value={value}>
-                  {value}
+                  {getFieldValue(value)}
                 </InlineSlotEditor>
               </p>
             </motion.div>
@@ -94,9 +96,9 @@ export default function EventDetails() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="text-center mb-10 max-w-2xl mx-auto"
           >
-            <p className="text-petal-600 font-serif text-lg leading-relaxed italic" data-slot="text.eventNote">
+            <p className="text-petal-600 font-serif text-lg leading-relaxed italic" style={getFieldStyle(eventNote)} data-slot="text.eventNote">
               <InlineSlotEditor slotKey="eventNote" label="Ghi chú" type="textarea" value={eventNote}>
-                {eventNote}
+                {getFieldValue(eventNote)}
               </InlineSlotEditor>
             </p>
           </motion.div>
@@ -111,7 +113,7 @@ export default function EventDetails() {
             className="text-center"
           >
             <a
-              href={mapsUrl}
+              href={getFieldValue(mapsUrl) as string}
               target="_blank"
               rel="noopener noreferrer"
               data-slot="url.maps"

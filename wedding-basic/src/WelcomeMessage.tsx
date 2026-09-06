@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
+import { getFieldValue, getFieldStyle } from './types';
 
 function Word({
   word, progress, range, highlight,
@@ -34,10 +35,11 @@ export default function WelcomeMessage() {
     offset: ['start 0.85', 'end 0.75'],
   });
 
-  const allWords = welcomeLines.flatMap((line, lineIndex) =>
+  const lines = getFieldValue(welcomeLines) || [];
+  const allWords = lines.flatMap((line: string, lineIndex: number) =>
     line === ''
       ? [{ text: '\n', lineIndex }]
-      : line.split(' ').map((w) => ({ text: w, lineIndex }))
+      : line.split(' ').map((w: string) => ({ text: w, lineIndex }))
   );
   const totalWords = allWords.filter((w) => w.text !== '\n').length;
   let wordIndex = 0;
@@ -77,8 +79,8 @@ export default function WelcomeMessage() {
           <div className="h-px flex-1 max-w-[80px]" style={{ background: 'linear-gradient(to left, transparent, #ffb3c3)' }} />
         </motion.div>
 
-        <div className="font-display text-3xl md:text-5xl lg:text-6xl leading-relaxed">
-          {allWords.map((entry, i) => {
+        <div className="font-display text-3xl md:text-5xl lg:text-6xl leading-relaxed" style={getFieldStyle(welcomeLines)}>
+          {allWords.map((entry: { text: string; lineIndex: number }, i: number) => {
             if (entry.text === '\n') {
               return <div key={`br-${i}`} className="h-5 md:h-8" />;
             }

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
+import { getFieldValue, getFieldStyle } from './types';
 
 export default function Hero() {
   const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } =
@@ -83,15 +84,16 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             className="inline-flex items-center gap-3 mb-10"
+            style={{ ...getFieldStyle(eventDateDisplay), display: getFieldStyle(eventDateDisplay).display || 'inline-flex' }}
           >
             <div className="h-px w-12 bg-petal-300" />
             <span
               className="text-petal-600 text-xs uppercase tracking-[0.35em] font-sans font-medium px-4 py-1.5 rounded-full border border-petal-200"
-              style={{ background: 'rgba(255,200,215,0.3)', backdropFilter: 'blur(8px)' }}
+              style={{ background: 'rgba(255,200,215,0.3)', backdropFilter: 'blur(8px)', color: getFieldStyle(eventDateDisplay).color }}
               data-slot="text.eventDateDisplay"
             >
               <InlineSlotEditor slotKey="eventDateDisplay" label="Ngày hiển thị" value={eventDateDisplay}>
-                {eventDateDisplay}
+                {getFieldValue(eventDateDisplay)}
               </InlineSlotEditor>
             </span>
             <div className="h-px w-12 bg-petal-300" />
@@ -104,10 +106,11 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.9 }}
               className="font-display text-7xl md:text-[9rem] lg:text-[11rem] leading-none text-petal-800 mb-3"
+              style={getFieldStyle(groomName)}
               data-slot="text.groomName"
             >
               <InlineSlotEditor slotKey="groomName" label="Tên chú rể" value={groomName}>
-                {groomName}
+                {getFieldValue(groomName)}
               </InlineSlotEditor>
             </motion.h1>
 
@@ -127,10 +130,11 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.9 }}
               className="font-display text-7xl md:text-[9rem] lg:text-[11rem] leading-none text-petal-800"
+              style={getFieldStyle(brideName)}
               data-slot="text.brideName"
             >
               <InlineSlotEditor slotKey="brideName" label="Tên cô dâu" value={brideName}>
-                {brideName}
+                {getFieldValue(brideName)}
               </InlineSlotEditor>
             </motion.h1>
           </div>
@@ -144,15 +148,16 @@ export default function Hero() {
           >
             <p
               className="text-lg md:text-xl text-petal-700 font-serif italic"
+              style={getFieldStyle(venue)}
               data-slot="text.venue"
             >
               <InlineSlotEditor slotKey="venue" label="Địa điểm" value={venue}>
-                {venue}
+                {getFieldValue(venue)}
               </InlineSlotEditor>
             </p>
-            <p className="text-sm text-petal-500 font-sans uppercase tracking-widest" data-slot="text.city">
+            <p className="text-sm text-petal-500 font-sans uppercase tracking-widest" style={getFieldStyle(city)} data-slot="text.city">
               <InlineSlotEditor slotKey="city" label="Thành phố" value={city}>
-                {city}
+                {getFieldValue(city)}
               </InlineSlotEditor>
             </p>
           </motion.div>

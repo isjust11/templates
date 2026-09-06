@@ -11,6 +11,7 @@ import Envelope from './Envelope';
 import Navigation from './Navigation';
 import { TemplateDataProvider } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
+import { getFieldValue } from './types';
 import type { TemplateEventData } from './types';
 
 /** Complete single-page template; all visible content comes from typed slot data. */
@@ -32,7 +33,7 @@ export default function WeddingInviteTemplate({
       onFieldChange={onFieldChange}
       onUploadImage={onUploadImage}
     >
-      <Envelope brideName={data.brideName} groomName={data.groomName} coverImage={data.coverImage}>
+      <Envelope brideName={getFieldValue(data.brideName) || ''} groomName={getFieldValue(data.groomName) || ''} coverImage={data.coverImage}>
         <Navigation />
         <main className="min-h-screen">
           <Hero />
@@ -61,7 +62,7 @@ export default function WeddingInviteTemplate({
                 <span className="text-petal-300 text-xl">♡</span>
                 <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(255,150,180,0.6))' }} />
               </div>
-              <Countdown targetDate={data.eventDate} />
+              <Countdown targetDate={getFieldValue(data.eventDate) || ''} />
             </div>
           </section>
 
@@ -91,12 +92,12 @@ export default function WeddingInviteTemplate({
 
               <p className="text-petal-200 text-base mb-5 font-serif italic leading-relaxed">
                 <InlineSlotEditor slotKey="footerMessage" label="Lời cảm ơn chân trang" value={data.footerMessage}>
-                  {data.footerMessage}
+                  {getFieldValue(data.footerMessage)}
                 </InlineSlotEditor>
               </p>
 
               <p className="font-display text-5xl md:text-6xl text-white mb-8 tracking-wide">
-                {data.groomName} & {data.brideName}
+                {getFieldValue(data.groomName)} & {getFieldValue(data.brideName)}
               </p>
 
               <div className="h-px max-w-[80px] mx-auto mb-6"
@@ -104,7 +105,7 @@ export default function WeddingInviteTemplate({
 
               <p className="text-petal-400 text-xs font-sans uppercase tracking-[0.2em]">
                 <InlineSlotEditor slotKey="footerCredit" label="Bản quyền / Credit" value={data.footerCredit}>
-                  {data.footerCredit}
+                  {getFieldValue(data.footerCredit)}
                 </InlineSlotEditor>
               </p>
             </div>

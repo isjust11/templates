@@ -6,7 +6,7 @@ import { useTemplateDataContext } from './TemplateDataProvider';
 interface InlineSlotEditorProps {
   slotKey: string;
   label?: string;
-  value: string;
+  value: any;
   type?: 'text' | 'textarea' | 'image' | 'date';
   onChange?: (newValue: string) => void;
   children: React.ReactNode;
@@ -22,7 +22,13 @@ export default function InlineSlotEditor({
 }: InlineSlotEditorProps) {
   const { isEditing, onFieldChange, onUploadImage } = useTemplateDataContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [tempValue, setTempValue] = useState(value || '');
+  
+  // Extract string value from ConfigurableField or raw string
+  const stringValue = (value && typeof value === 'object' && 'type' in value) 
+    ? (value.value ?? value.defaul) 
+    : (value || '');
+    
+  const [tempValue, setTempValue] = useState(stringValue);
   const [uploading, setUploading] = useState(false);
 
   if (!isEditing) {
@@ -30,10 +36,14 @@ export default function InlineSlotEditor({
   }
 
   const handleSave = () => {
+    const finalValue = (value && typeof value === 'object' && 'type' in value)
+      ? { ...value, value: tempValue }
+      : tempValue;
+
     if (onChange) {
-      onChange(tempValue);
+      onChange(finalValue);
     } else if (onFieldChange) {
-      onFieldChange(slotKey as any, tempValue);
+      onFieldChange(slotKey as any, finalValue);
     }
     setIsOpen(false);
   };
@@ -51,10 +61,14 @@ export default function InlineSlotEditor({
         imageUrl = URL.createObjectURL(file);
       }
 
+      const finalValue = (value && typeof value === 'object' && 'type' in value)
+        ? { ...value, value: imageUrl }
+        : imageUrl;
+
       if (onChange) {
-        onChange(imageUrl);
+        onChange(finalValue);
       } else if (onFieldChange) {
-        onFieldChange(slotKey as any, imageUrl);
+        onFieldChange(slotKey as any, finalValue);
       }
     } catch (err) {
       console.error('Failed to upload image:', err);
@@ -85,7 +99,7 @@ export default function InlineSlotEditor({
           <button
             type="button"
             onClick={() => {
-              setTempValue(value || '');
+              setTempValue(stringValue);
               setIsOpen(true);
             }}
             className="flex items-center gap-1 bg-sage-800 text-cream-50 hover:bg-sage-900 shadow-md rounded-full px-3 py-1 text-xs font-sans font-medium"
