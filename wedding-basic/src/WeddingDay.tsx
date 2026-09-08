@@ -51,77 +51,82 @@ export default function WeddingDay() {
           />
 
           <div className="space-y-20">
-            {schedule.map((event, index) => (
-              <motion.div
-                key={`${event.time}-${event.title}`}
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: index * 0.18 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full hidden md:block z-10 ring-4 ring-white"
-                  style={{ top: '50%', background: 'linear-gradient(135deg, #ff9db7, #ef4065)', boxShadow: '0 0 12px rgba(255,100,140,0.4)' }}
-                />
-
-                <div
-                  className={`grid md:grid-cols-2 gap-8 items-center ${
-                    event.side === 'left' ? 'md:grid-flow-dense' : ''
-                  }`}
+            {(() => {
+              let arr = getFieldValue(schedule);
+              if (typeof arr === 'string') {
+                try { arr = JSON.parse(arr); } catch (e) { arr = []; }
+              }
+              if (!Array.isArray(arr)) arr = [];
+              return arr.map((event: any, index: number) => (
+                <motion.div
+                  key={`${event.time}-${event.title}`}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.7, delay: index * 0.18 }}
+                  className="relative"
                 >
-                  {/* Text side */}
+                  {/* Timeline dot */}
                   <div
-                    className={`${
-                      event.side === 'left'
-                        ? 'md:col-start-2 md:text-left md:pl-12'
-                        : 'md:text-right md:pr-12'
-                    }`}
-                  >
-                    <span
-                      className="inline-block text-xs font-sans font-semibold uppercase tracking-[0.2em] mb-3 px-3 py-1 rounded-full"
-                      style={{
-                        background: 'rgba(255,180,200,0.2)',
-                        border: '1px solid rgba(255,180,200,0.4)',
-                        color: '#ef4065',
-                        ...getFieldStyle(event.time)
-                      }}
-                    >
-                      {getFieldValue(event.time)}
-                    </span>
-                    <h3 className="font-display text-3xl md:text-4xl text-petal-800 mb-3" style={getFieldStyle(event.title)}>
-                      {getFieldValue(event.title)}
-                    </h3>
-                    <p className="text-petal-600 font-serif leading-relaxed" style={getFieldStyle(event.description)}>
-                      {getFieldValue(event.description)}
-                    </p>
-                  </div>
+                    className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full hidden md:block z-10 ring-4 ring-white"
+                    style={{ top: '50%', background: 'linear-gradient(135deg, #ff9db7, #ef4065)', boxShadow: '0 0 12px rgba(255,100,140,0.4)' }}
+                  />
 
-                  {/* Image side */}
-                  <div className={event.side === 'left' ? 'md:col-start-1' : ''}>
+                  <div
+                    className={`grid md:grid-cols-2 gap-8 items-center ${event.side === 'left' ? 'md:grid-flow-dense' : ''
+                      }`}
+                  >
+                    {/* Text side */}
                     <div
-                      className="relative aspect-[4/3] overflow-hidden rounded-2xl"
-                      style={{
-                        boxShadow: '0 12px 40px rgba(255,100,140,0.18)',
-                      }}
+                      className={`${event.side === 'left'
+                          ? 'md:col-start-2 md:text-left md:pl-12'
+                          : 'md:text-right md:pr-12'
+                        }`}
                     >
-                      <Image
-                        src={event.image || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800'}
-                        alt={getFieldValue(event.title) || 'Event image'}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-700"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                      {/* Pink overlay tint */}
+                      <span
+                        className="inline-block text-xs font-sans font-semibold uppercase tracking-[0.2em] mb-3 px-3 py-1 rounded-full"
+                        style={{
+                          background: 'rgba(255,180,200,0.2)',
+                          border: '1px solid rgba(255,180,200,0.4)',
+                          color: '#ef4065',
+                          ...getFieldStyle(event.time)
+                        }}
+                      >
+                        {getFieldValue(event.time)}
+                      </span>
+                      <h3 className="font-display text-3xl md:text-4xl text-petal-800 mb-3" style={getFieldStyle(event.title)}>
+                        {getFieldValue(event.title)}
+                      </h3>
+                      <p className="text-petal-600 font-serif leading-relaxed" style={getFieldStyle(event.description)}>
+                        {getFieldValue(event.description)}
+                      </p>
+                    </div>
+
+                    {/* Image side */}
+                    <div className={event.side === 'left' ? 'md:col-start-1' : ''}>
                       <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{ background: 'linear-gradient(135deg, rgba(255,150,180,0.1) 0%, transparent 60%)' }}
-                      />
+                        className="relative aspect-[4/3] overflow-hidden rounded-2xl"
+                        style={{
+                          boxShadow: '0 12px 40px rgba(255,100,140,0.18)',
+                        }}
+                      >
+                        <Image
+                          src={event.image || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800'}
+                          alt={getFieldValue(event.title) || 'Event image'}
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-700"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                        {/* Pink overlay tint */}
+                        <div
+                          className="absolute inset-0 pointer-events-none"
+                          style={{ background: 'linear-gradient(135deg, rgba(255,150,180,0.1) 0%, transparent 60%)' }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))
+            })()}
           </div>
         </div>
       </div>

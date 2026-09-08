@@ -57,7 +57,7 @@ export const SAMPLE_META: Record<
 
 export const SAMPLES: Record<SampleId, TemplateEventData> = {
   'my-wedding': {
-    brideName: { type: 'TEXT', defaul: 'Minh Anh', config: {} },
+    brideName: { type: 'TEXT', defaul: 'Minh Anh 13', config: {} },
     groomName: { type: 'TEXT', defaul: 'Hoàng Nam', config: {} },
     eventDate: { type: 'DATE', defaul: '2026-10-18T17:30:00', config: {} },
     eventDateDisplay: { type: 'TEXT', defaul: '18 tháng 10, 2026', config: {} },
