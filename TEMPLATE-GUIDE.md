@@ -43,4 +43,7 @@ Khi bạn muốn thêm một thiết kế mới (ví dụ: `floral-wedding`), qu
 4.  API trả về toàn bộ dữ liệu sự kiện cùng với `templateId: "floral-wedding"`.
 5.  Ứng dụng Host tra cứu `templateId` này trong `TEMPLATE_REGISTRY`, lấy component `Floral` ra, truyền dữ liệu vào và render cho người dùng.
 
+## 5. Theme tokens
+Template wrap `ThemeRoot` → CSS vars `--el-accent`, `--el-font-display`, `--el-petal-*`… Host Tailwind `petal`/`font-*` đọc các biến đó. Đặt `eventData.theme` hoặc `brideName.config.color` để đổi skin không sửa code. Chi tiết: [TEMPLATE-CONTRACT.md](./TEMPLATE-CONTRACT.md#theme-tokens-el-).
+
 **Tóm lại:** Mô hình này rất linh hoạt và dễ scale. Các designer/developer có thể phát triển giao diện hoàn toàn độc lập dưới dạng package npm, không sợ ảnh hưởng chéo đến mã nguồn chính. Hệ thống core chỉ cần "cắm" các package đó vào registry là có thể phục vụ hàng ngàn thiết kế khác nhau qua một máy chủ Next.js duy nhất.

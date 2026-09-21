@@ -55,3 +55,26 @@ export const TEMPLATE_REGISTRY = {
 ```
 
 Nest: template published `slug = floral-wedding` + `variablesSchema` từ `slots.schema.json`. Event gán template đó → `GET /public/events/:slug` trả `templateId: "floral-wedding"` → cùng URL `/invite/:slug`.
+
+## Theme tokens (`--el-*`)
+
+Mỗi template **bắt buộc** wrap UI trong root có class `el-invite-root` và set CSS variables (xem `wedding-basic/src/theme.ts` + `ThemeRoot`).
+
+| Token | Ý nghĩa |
+|-------|---------|
+| `--el-accent` | Màu nhấn (nút, kicker) |
+| `--el-accent-soft` | Accent nhạt |
+| `--el-ink` / `--el-muted` | Chữ chính / phụ |
+| `--el-bg` / `--el-bg-soft` | Nền |
+| `--el-font-display` / `--el-font-script` / `--el-font-body` / `--el-font-sans` | Font |
+| `--el-petal-50` … `--el-petal-900` | Scale màu (Host map `text-petal-*`) |
+
+**Nguồn dữ liệu (ưu tiên):**
+
+1. `event.eventData.theme` (object) — skin toàn thiệp  
+2. `TemplateConfig.color` / `.font` trên field then (vd. `brideName`) — hint accent/display  
+3. Default preset của package  
+
+Host Tailwind (`wedding-invite/tailwind.config.ts`) map `petal.*` và `fontFamily` → các biến trên, nên đổi `theme.accent` là đổi cả UI mà không sửa class.
+
+Alias tương thích Nest HTML: `--el-primary-color`, `--el-font-heading`, `--el-background`.

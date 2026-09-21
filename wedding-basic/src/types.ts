@@ -10,6 +10,7 @@ export type ConfigurableField<T> = {
   defaul?: T;
   value?: T;
   config?: FieldConfig;
+  id?: number;
 };
 
 export type ScheduleItem = {
@@ -20,8 +21,37 @@ export type ScheduleItem = {
   side: 'left' | 'right';
 };
 
+/** Partial theme blob stored on `event.eventData.theme`. */
+export type ThemeInput = {
+  accent?: string;
+  accentSoft?: string;
+  ink?: string;
+  muted?: string;
+  bg?: string;
+  bgSoft?: string;
+  onAccent?: string;
+  fontDisplay?: string;
+  fontScript?: string;
+  fontBody?: string;
+  fontSans?: string;
+  scale?: Partial<{
+    50: string;
+    100: string;
+    200: string;
+    300: string;
+    400: string;
+    500: string;
+    600: string;
+    700: string;
+    800: string;
+    900: string;
+  }>;
+};
+
 /** Typed slot payload for this template repo (`slots.schema.json`). */
 export type TemplateEventData = {
+  /** Optional global skin — drives `--el-*` CSS vars via ThemeRoot. */
+  theme?: ThemeInput;
   coverImage?: string;
   backgroundImage?: string;
   album?: string[];
@@ -57,6 +87,17 @@ export const SAMPLE_META: Record<
 
 export const SAMPLES: Record<SampleId, TemplateEventData> = {
   'my-wedding': {
+    theme: {
+      accent: '#ef4065',
+      accentSoft: '#ffb3c3',
+      ink: '#a82046',
+      bg: '#fff5f7',
+      bgSoft: '#fff0f4',
+      fontDisplay: '"Gloock", "Lora", serif',
+      fontScript: '"Pinyon Script", cursive',
+      fontBody: '"Lora", Georgia, serif',
+      fontSans: '"DM Sans", system-ui, sans-serif',
+    },
     brideName: { type: 'TEXT', defaul: 'Minh Anh 13', config: {} },
     groomName: { type: 'TEXT', defaul: 'Hoàng Nam', config: {} },
     eventDate: { type: 'DATE', defaul: '2026-10-18T17:30:00', config: {} },
@@ -142,10 +183,18 @@ export function getFieldStyle(field: ConfigurableField<any> | any | undefined): 
   if (field && typeof field === 'object' && 'type' in field && 'config' in field) {
     const f = field as ConfigurableField<any>;
     if (!f.config) return {};
+    const size = f.config.size;
+    const fontSize =
+      size == null || size === ''
+        ? undefined
+        : /^\d+(\.\d+)?$/.test(String(size))
+          ? `${size}px`
+          : String(size);
     return {
-      color: f.config.color,
-      fontSize: f.config.size ? `${f.config.size}px` : undefined,
-      display: (f.config.display === '0' || f.config.display === 'false') ? 'none' : undefined,
+      color: f.config.color || undefined,
+      fontFamily: f.config.font || undefined,
+      fontSize,
+      display: f.config.display === '0' || f.config.display === 'false' ? 'none' : undefined,
     };
   }
   return {};

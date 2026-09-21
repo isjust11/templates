@@ -12,6 +12,24 @@
     "venue"
   ],
   "properties": {
+    "theme": {
+      "type": "object",
+      "description": "Global skin → CSS vars --el-* (accent, fonts, scale)",
+      "slot": "theme.root",
+      "properties": {
+        "accent": { "type": "string" },
+        "accentSoft": { "type": "string" },
+        "ink": { "type": "string" },
+        "muted": { "type": "string" },
+        "bg": { "type": "string" },
+        "bgSoft": { "type": "string" },
+        "onAccent": { "type": "string" },
+        "fontDisplay": { "type": "string" },
+        "fontScript": { "type": "string" },
+        "fontBody": { "type": "string" },
+        "fontSans": { "type": "string" }
+      }
+    },
     "coverImage": { "type": "string", "slot": "image.cover" },
     "backgroundImage": { "type": "string", "slot": "image.background" },
     "album": {
