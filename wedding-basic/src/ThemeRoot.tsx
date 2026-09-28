@@ -2,6 +2,7 @@
 
 import type { CSSProperties, ReactNode } from 'react';
 import {
+  readStoredThemeCss,
   resolveThemeTokens,
   themeToCssVars,
   type ThemeTokens,
@@ -29,6 +30,7 @@ export default function ThemeRoot({
 }) {
   const tokens = resolveThemeTokens(data, preset);
   const cssVars = themeToCssVars(tokens);
+  const storedCss = readStoredThemeCss(data);
 
   return (
     <div
@@ -42,6 +44,7 @@ export default function ThemeRoot({
         ...style,
       }}
     >
+      {storedCss ? <style>{storedCss}</style> : null}
       {children}
     </div>
   );

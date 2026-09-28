@@ -107,8 +107,13 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.8 }}
-            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
-            style={{ background: 'radial-gradient(ellipse at 50% 30%, #ffc9d9 0%, #fff0f4 40%, #ffffff 100%)' }}
+            className="fixed inset-0 z-50 overflow-hidden"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'radial-gradient(ellipse at 50% 30%, #ffc9d9 0%, #fff0f4 40%, #ffffff 100%)',
+            }}
           >
             {/* Floating blobs */}
             <div className="absolute inset-0 overflow-hidden">
@@ -117,13 +122,14 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,200,220,0.15) 0%, transparent 60%)' }} />
             </div>
 
-            <div className="relative z-10 max-w-2xl w-full px-4">
+            <div className="relative z-10 flex w-full flex-col items-center px-8">
               {/* Envelope */}
               <motion.div
                 onClick={handleOpen}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative w-full cursor-pointer focus:outline-none group"
+                className="relative w-full max-w-[280px] cursor-pointer focus:outline-none group"
+                style={{ marginLeft: 'auto', marginRight: 'auto' }}
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.3 }}
@@ -188,10 +194,14 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
                     </div>
                   </motion.div>
 
-                  {/* Wax seal */}
+                  {/* Wax seal — x/y live on the motion style so scale/rotate do not drop the centering translate */}
                   <motion.div
-                    className="absolute left-1/2 top-20 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full flex items-center justify-center border-4 z-20"
+                    className="absolute z-20 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-4"
                     style={{
+                      left: '50%',
+                      top: '30%',
+                      x: '-50%',
+                      y: '-50%',
                       background: 'linear-gradient(135deg, #ff9db7, #ef4065)',
                       borderColor: '#c9244d',
                       boxShadow: '0 6px 24px rgba(255,100,140,0.4)',
@@ -204,7 +214,7 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
                     whileHover={!isOpening ? { rotate: 360 } : {}}
                     transition={isOpening ? { duration: 0.5, ease: 'easeOut' } : { duration: 0.6 }}
                   >
-                    <span className="font-script text-2xl text-white">
+                    <span className="font-script text-2xl leading-none text-white">
                       {groomName.charAt(0)}&{brideName.charAt(0)}
                     </span>
                   </motion.div>
@@ -212,17 +222,17 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
 
                 {/* Hover instruction */}
                 <motion.div
-                  className="text-center mt-6"
+                  className="mt-6 w-full text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isOpening ? 0 : 1 }}
                   transition={{ delay: 1.2, duration: 0.3 }}
                 >
-                  <p className="text-petal-600 text-sm font-sans mb-3">
+                  <p className="mb-3 font-sans text-sm text-petal-600">
                     Nhấn vào phong bì để mở thiệp mời
                   </p>
                   <button
                     onClick={handleSkip}
-                    className="text-petal-400 text-xs uppercase tracking-wider hover:text-petal-600 transition-colors font-sans"
+                    className="font-sans text-xs uppercase tracking-[0.2em] text-petal-400 transition-colors hover:text-petal-600"
                   >
                     Bỏ qua
                   </button>

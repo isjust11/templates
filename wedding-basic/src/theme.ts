@@ -156,28 +156,42 @@ function readThemeBlob(data: Record<string, unknown> | TemplateEventData): Theme
   if (!raw) return {};
   if (typeof raw === 'string') {
     try {
-      return JSON.parse(raw) as ThemeInput;
+      return readThemeBlob({ theme: JSON.parse(raw) });
     } catch {
       return {};
     }
   }
   if (typeof raw === 'object' && raw !== null) {
     const obj = raw as Record<string, unknown>;
+    if (obj.tokens && typeof obj.tokens === 'object') return obj.tokens as ThemeInput;
     if ('type' in obj && (obj.type === 'RAW' || obj.type === 'THEME')) {
       const value = obj.value ?? obj.defaul;
       if (typeof value === 'string') {
         try {
-          return JSON.parse(value) as ThemeInput;
+          return readThemeBlob({ theme: JSON.parse(value) });
         } catch {
           return {};
         }
       }
-      if (value && typeof value === 'object') return value as ThemeInput;
+      if (value && typeof value === 'object') return readThemeBlob({ theme: value });
       return {};
     }
     return obj as ThemeInput;
   }
   return {};
+}
+
+/** Stylesheet compiled and stored with the template (`data.theme.css`). */
+export function readStoredThemeCss(data?: Record<string, unknown> | TemplateEventData | null): string {
+  const raw = data ? (data as Record<string, unknown>).theme : undefined;
+  if (!raw || typeof raw !== 'object') return '';
+  const obj = raw as Record<string, unknown>;
+  const direct = typeof obj.css === 'string' ? obj.css : '';
+  const nested =
+    obj.value && typeof obj.value === 'object' && typeof (obj.value as Record<string, unknown>).css === 'string'
+      ? String((obj.value as Record<string, unknown>).css)
+      : '';
+  return (direct || nested).replace(/<\/style/gi, '');
 }
 
 /**
