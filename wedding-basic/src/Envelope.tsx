@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTemplateData } from './TemplateDataProvider';
+import { readInviteEffects } from './theme';
 
 interface EnvelopeProps {
   children: React.ReactNode;
@@ -18,14 +20,15 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
   const [isMuted, setIsMuted] = useState(false);
   const [confettiModule, setConfettiModule] = useState<ConfettiFunction | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const effects = readInviteEffects(useTemplateData());
 
   const startMusic = useCallback(() => {
-    if (audioRef.current) return;
-    const audio = new Audio('/music/song.mp3');
+    if (!effects.musicEnabled || audioRef.current) return;
+    const audio = new Audio(effects.musicUrl || '/music/song.mp3');
     audio.loop = true;
     audio.play().catch(() => {});
     audioRef.current = audio;
-  }, []);
+  }, [effects.musicEnabled, effects.musicUrl]);
 
   const toggleMute = useCallback(() => {
     if (!audioRef.current) return;
@@ -34,11 +37,11 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
   }, []);
 
   useEffect(() => {
-    // Dynamically import confetti only on client side
+    if (!effects.confetti) return;
     import('canvas-confetti').then((module) => {
       setConfettiModule(() => module.default);
     });
-  }, []);
+  }, [effects.confetti]);
 
   const handleOpen = async () => {
     if (isOpening) return;
@@ -55,7 +58,7 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
   };
 
   const triggerConfetti = () => {
-    if (!confettiModule) return;
+    if (!effects.confetti || !confettiModule) return;
 
     const duration = 3000;
     const animationEnd = Date.now() + duration;
@@ -156,17 +159,17 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
                       transformStyle: 'preserve-3d',
                     }}
                     animate={{
-                      rotateX: isOpening ? -180 : [0, -5, 0],
+                      rotateX: isOpening ? -180 : effects.envelope ? [0, -5, 0] : 0,
                     }}
                     transition={isOpening ? {
                       duration: 0.8,
                       ease: [0.4, 0, 0.2, 1],
-                    } : {
+                    } : effects.envelope ? {
                       duration: 2,
                       repeat: Infinity,
                       repeatType: 'reverse',
                       ease: 'easeInOut',
-                    }}
+                    } : { duration: 0.2 }}
                   />
 
                   {/* Letter content */}
@@ -255,7 +258,7 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
 
       {/* Mute/unmute toggle */}
       <AnimatePresence>
-        {isOpened && (
+        {isOpened && effects.musicEnabled && (
           <motion.button
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}

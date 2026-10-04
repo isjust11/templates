@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
 import { getFieldValue, getFieldStyle } from './types';
+import { readInviteEffects } from './theme';
 
 export default function Hero() {
-  const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } =
-    useTemplateData();
+  const data = useTemplateData();
+  const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } = data;
+  const effects = readInviteEffects(data);
 
   return (
     <section
@@ -52,7 +54,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Glass petals decoration */}
+      {effects.petals ? (
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(6)].map((_, i) => (
           <motion.div
@@ -71,6 +73,7 @@ export default function Hero() {
           </motion.div>
         ))}
       </div>
+      ) : null}
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div

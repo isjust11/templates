@@ -181,6 +181,26 @@ function readThemeBlob(data: Record<string, unknown> | TemplateEventData): Theme
   return {};
 }
 
+export type InviteEffects = {
+  musicEnabled: boolean;
+  musicUrl: string;
+  confetti: boolean;
+  petals: boolean;
+  envelope: boolean;
+};
+
+/** Music and motion flags stored on `data.theme` from the admin theme step. */
+export function readInviteEffects(data?: Record<string, unknown> | TemplateEventData | null): InviteEffects {
+  const theme = (data ? readThemeBlob(data) : {}) as ThemeInput;
+  return {
+    musicEnabled: theme.musicEnabled !== false,
+    musicUrl: typeof theme.musicUrl === 'string' ? theme.musicUrl.trim() : '',
+    confetti: theme.effectConfetti !== false,
+    petals: theme.effectPetals !== false,
+    envelope: theme.effectEnvelope !== false,
+  };
+}
+
 /** Stylesheet compiled and stored with the template (`data.theme.css`). */
 export function readStoredThemeCss(data?: Record<string, unknown> | TemplateEventData | null): string {
   const raw = data ? (data as Record<string, unknown>).theme : undefined;

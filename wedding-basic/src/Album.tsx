@@ -3,10 +3,32 @@
 import { motion } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
 
+function albumUrls(album: unknown): string[] {
+  if (Array.isArray(album)) {
+    return album.flatMap((item) => {
+      if (typeof item === 'string' && item.trim()) return [item.trim()];
+      if (item && typeof item === 'object') {
+        const record = item as Record<string, unknown>;
+        const nested = record.url || record.image || record.src || record.value || record.defaul;
+        if (typeof nested === 'string' && nested.trim()) return [nested.trim()];
+        if (nested && typeof nested === 'object') return albumUrls(nested);
+      }
+      return [];
+    });
+  }
+  if (album && typeof album === 'object') {
+    const record = album as Record<string, unknown>;
+    const inner = record.value ?? record.defaul;
+    if (inner !== undefined && inner !== album) return albumUrls(inner);
+  }
+  return [];
+}
+
 export default function Album() {
   const { album } = useTemplateData();
+  const photos = albumUrls(album);
 
-  if (!album || album.length === 0) return null;
+  if (photos.length === 0) return null;
 
   return (
     <section
@@ -52,7 +74,7 @@ export default function Album() {
 
         {/* Masonry-style grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[240px]">
-          {album.map((imageUrl, index) => (
+          {photos.map((imageUrl, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.92 }}
