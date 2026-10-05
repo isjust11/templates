@@ -10,11 +10,12 @@ interface EnvelopeProps {
   brideName: string;
   groomName: string;
   coverImage?: string;
+  onOpened?: () => void;
 }
 
 type ConfettiFunction = (options?: unknown) => void;
 
-export default function Envelope({ children, brideName, groomName, coverImage }: EnvelopeProps) {
+export default function Envelope({ children, brideName, groomName, coverImage, onOpened }: EnvelopeProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -53,6 +54,7 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
     // After flap opens, show content
     setTimeout(() => {
       setIsOpened(true);
+      onOpened?.();
       triggerConfetti();
     }, 1200);
   };
@@ -99,6 +101,7 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
     e.stopPropagation();
     startMusic();
     setIsOpened(true);
+    onOpened?.();
   };
 
   return (
@@ -115,7 +118,8 @@ export default function Envelope({ children, brideName, groomName, coverImage }:
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'radial-gradient(ellipse at 50% 30%, #ffc9d9 0%, #fff0f4 40%, #ffffff 100%)',
+              background:
+                'radial-gradient(ellipse at 50% 30%, var(--el-accent-soft) 0%, var(--el-bg-soft) 42%, var(--el-bg) 100%)',
             }}
           >
             {/* Floating blobs */}

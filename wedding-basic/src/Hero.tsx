@@ -16,7 +16,8 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-4 overflow-hidden"
       style={{
-        background: 'radial-gradient(ellipse at 60% 0%, #ffc9d9 0%, #fff0f4 40%, #fff5f7 70%, #ffffff 100%)',
+        background:
+          'radial-gradient(ellipse at 60% 0%, var(--el-accent-soft) 0%, var(--el-bg-soft) 42%, var(--el-bg) 100%)',
       }}
     >
       {/* Background image layer */}

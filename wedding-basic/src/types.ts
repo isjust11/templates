@@ -39,6 +39,9 @@ export type ThemeInput = {
   effectConfetti?: boolean;
   effectPetals?: boolean;
   effectEnvelope?: boolean;
+  colorMode?: 'light' | 'dark' | 'system';
+  autoScroll?: boolean;
+  autoScrollSpeed?: 'slow' | 'normal' | 'fast';
   scale?: Partial<{
     50: string;
     100: string;
