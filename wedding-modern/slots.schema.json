@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeddingModernTemplateSlots",
+  "description": "Typed data contract for the wedding-modern editorial template",
+  "type": "object",
+  "required": ["brideName", "groomName", "eventDate", "eventDateDisplay", "city", "venue"],
+  "properties": {
+    "theme": {
+      "type": "object",
+      "description": "Global skin → CSS vars --el-*",
+      "slot": "theme.root",
+      "properties": {
+        "accent": { "type": "string" },
+        "accentSoft": { "type": "string" },
+        "ink": { "type": "string" },
+        "muted": { "type": "string" },
+        "bg": { "type": "string" },
+        "bgSoft": { "type": "string" },
+        "onAccent": { "type": "string" },
+        "fontDisplay": { "type": "string" },
+        "fontScript": { "type": "string" },
+        "fontBody": { "type": "string" },
+        "fontSans": { "type": "string" },
+        "musicEnabled": { "type": "boolean" },
+        "musicUrl": { "type": "string" },
+        "effectConfetti": { "type": "boolean" },
+        "effectPetals": { "type": "boolean" },
+        "effectEnvelope": { "type": "boolean" },
+        "colorMode": { "type": "string" },
+        "autoScroll": { "type": "boolean" },
+        "autoScrollSpeed": { "type": "string" }
+      }
+    },
+    "coverImage": { "type": "string", "slot": "image.cover" },
+    "backgroundImage": { "type": "string", "slot": "image.background" },
+    "album": {
+      "type": "array",
+      "slot": "list.album",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "slot": "image.album" }
+        }
+      }
+    },
+    "brideName": { "type": "string", "slot": "text.brideName" },
+    "groomName": { "type": "string", "slot": "text.groomName" },
+    "eventDate": { "type": "string", "format": "date-time", "slot": "datetime.eventDate" },
+    "eventDateDisplay": { "type": "string", "slot": "text.eventDateDisplay" },
+    "city": { "type": "string", "slot": "text.city" },
+    "venue": { "type": "string", "slot": "text.venue" },
+    "hosts": { "type": "string", "slot": "text.hosts" },
+    "mapsUrl": { "type": "string", "slot": "url.maps" },
+    "welcomeLines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "slot": "text.welcomeLines"
+    },
+    "welcomeHighlightLineIndex": { "type": "integer", "slot": "number.welcomeHighlightLineIndex" },
+    "scheduleIntro": { "type": "string", "slot": "text.scheduleIntro" },
+    "schedule": {
+      "type": "array",
+      "slot": "list.schedule",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string" },
+          "side": { "enum": ["left", "right"] }
+        }
+      }
+    },
+    "eventNote": { "type": "string", "slot": "text.eventNote" },
+    "footerMessage": { "type": "string", "slot": "text.footerMessage" },
+    "footerCredit": { "type": "string", "slot": "text.footerCredit" },
+    "locale": { "type": "string", "slot": "text.locale" }
+  }
+}
