@@ -1,20 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "WeddingBasicTemplateSlots",
-  "description": "Typed data contract for wedding-basic single-page template",
+  "title": "WeddingModernTemplateSlots",
+  "description": "Typed data contract for the wedding-modern editorial template",
   "type": "object",
-  "required": [
-    "brideName",
-    "groomName",
-    "eventDate",
-    "eventDateDisplay",
-    "city",
-    "venue"
-  ],
+  "required": ["brideName", "groomName", "eventDate", "eventDateDisplay", "city", "venue"],
   "properties": {
     "theme": {
       "type": "object",
-      "description": "Global skin → CSS vars --el-* (accent, fonts, scale)",
+      "description": "Global skin → CSS vars --el-*",
       "slot": "theme.root",
       "properties": {
         "accent": { "type": "string" },
@@ -27,7 +20,15 @@
         "fontDisplay": { "type": "string" },
         "fontScript": { "type": "string" },
         "fontBody": { "type": "string" },
-        "fontSans": { "type": "string" }
+        "fontSans": { "type": "string" },
+        "musicEnabled": { "type": "boolean" },
+        "musicUrl": { "type": "string" },
+        "effectConfetti": { "type": "boolean" },
+        "effectPetals": { "type": "boolean" },
+        "effectEnvelope": { "type": "boolean" },
+        "colorMode": { "type": "string" },
+        "autoScroll": { "type": "boolean" },
+        "autoScrollSpeed": { "type": "string" }
       }
     },
     "coverImage": { "type": "string", "slot": "image.cover" },
@@ -44,11 +45,7 @@
     },
     "brideName": { "type": "string", "slot": "text.brideName" },
     "groomName": { "type": "string", "slot": "text.groomName" },
-    "eventDate": {
-      "type": "string",
-      "format": "date-time",
-      "slot": "datetime.eventDate"
-    },
+    "eventDate": { "type": "string", "format": "date-time", "slot": "datetime.eventDate" },
     "eventDateDisplay": { "type": "string", "slot": "text.eventDateDisplay" },
     "city": { "type": "string", "slot": "text.city" },
     "venue": { "type": "string", "slot": "text.venue" },
@@ -59,17 +56,13 @@
       "items": { "type": "string" },
       "slot": "text.welcomeLines"
     },
-    "welcomeHighlightLineIndex": {
-      "type": "integer",
-      "slot": "number.welcomeHighlightLineIndex"
-    },
+    "welcomeHighlightLineIndex": { "type": "integer", "slot": "number.welcomeHighlightLineIndex" },
     "scheduleIntro": { "type": "string", "slot": "text.scheduleIntro" },
     "schedule": {
       "type": "array",
       "slot": "list.schedule",
       "items": {
         "type": "object",
-        "required": ["time", "title", "description", "image", "side"],
         "properties": {
           "time": { "type": "string" },
           "title": { "type": "string" },

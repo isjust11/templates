@@ -156,28 +156,80 @@ function readThemeBlob(data: Record<string, unknown> | TemplateEventData): Theme
   if (!raw) return {};
   if (typeof raw === 'string') {
     try {
-      return JSON.parse(raw) as ThemeInput;
+      return readThemeBlob({ theme: JSON.parse(raw) });
     } catch {
       return {};
     }
   }
   if (typeof raw === 'object' && raw !== null) {
     const obj = raw as Record<string, unknown>;
-    if ('type' in obj && (obj.type === 'RAW' || obj.type === 'THEME')) {
+    const { tokens: _tokens, value: _value, defaul: _defaul, type: _type, id: _id, css: _css, ...siblings } = obj;
+    let inner: ThemeInput = {};
+    if (obj.tokens && typeof obj.tokens === 'object') {
+      inner = readThemeBlob({ theme: obj.tokens });
+    } else if ('type' in obj && (obj.type === 'RAW' || obj.type === 'THEME')) {
       const value = obj.value ?? obj.defaul;
       if (typeof value === 'string') {
         try {
-          return JSON.parse(value) as ThemeInput;
+          inner = readThemeBlob({ theme: JSON.parse(value) });
         } catch {
-          return {};
+          inner = {};
         }
+      } else if (value && typeof value === 'object') {
+        inner = readThemeBlob({ theme: value });
       }
-      if (value && typeof value === 'object') return value as ThemeInput;
-      return {};
+    } else {
+      inner = obj as ThemeInput;
     }
-    return obj as ThemeInput;
+    return { ...inner, ...(siblings as ThemeInput) };
   }
   return {};
+}
+
+export type InviteEffects = {
+  musicEnabled: boolean;
+  musicUrl: string;
+  confetti: boolean;
+  petals: boolean;
+  envelope: boolean;
+  colorMode: 'light' | 'dark' | 'system';
+  autoScroll: boolean;
+  autoScrollSpeed: 'slow' | 'normal' | 'fast';
+};
+
+function isEnabledFlag(value: unknown): boolean {
+  return value === true || value === 'true' || value === 1 || value === '1';
+}
+
+/** Music, motion, color mode, and auto-scroll stored on `data.theme`. */
+export function readInviteEffects(data?: Record<string, unknown> | TemplateEventData | null): InviteEffects {
+  const theme = (data ? readThemeBlob(data) : {}) as ThemeInput;
+  const colorMode = theme.colorMode === 'dark' || theme.colorMode === 'system' ? theme.colorMode : 'light';
+  const autoScrollSpeed =
+    theme.autoScrollSpeed === 'slow' || theme.autoScrollSpeed === 'fast' ? theme.autoScrollSpeed : 'normal';
+  return {
+    musicEnabled: theme.musicEnabled !== false,
+    musicUrl: typeof theme.musicUrl === 'string' ? theme.musicUrl.trim() : '',
+    confetti: theme.effectConfetti !== false,
+    petals: theme.effectPetals !== false,
+    envelope: theme.effectEnvelope !== false,
+    colorMode,
+    autoScroll: isEnabledFlag(theme.autoScroll),
+    autoScrollSpeed,
+  };
+}
+
+/** Stylesheet compiled and stored with the template (`data.theme.css`). */
+export function readStoredThemeCss(data?: Record<string, unknown> | TemplateEventData | null): string {
+  const raw = data ? (data as Record<string, unknown>).theme : undefined;
+  if (!raw || typeof raw !== 'object') return '';
+  const obj = raw as Record<string, unknown>;
+  const direct = typeof obj.css === 'string' ? obj.css : '';
+  const nested =
+    obj.value && typeof obj.value === 'object' && typeof (obj.value as Record<string, unknown>).css === 'string'
+      ? String((obj.value as Record<string, unknown>).css)
+      : '';
+  return (direct || nested).replace(/<\/style/gi, '');
 }
 
 /**

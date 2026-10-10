@@ -1,15 +1,7 @@
 'use client';
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
-import {
-  readInviteEffects,
-  readStoredThemeCss,
-  resolveThemeTokens,
-  themeToCssVars,
-  type ThemeTokens,
-  WEDDING_BASIC_DEFAULT_THEME,
-} from './theme';
-import type { TemplateEventData } from './types';
+import { useEffect, useState, type ReactNode } from 'react';
+import { readInviteEffects, readStoredThemeCss, resolveTheme, themeToCssVars } from './theme';
 
 function useResolvedColorMode(preference: 'light' | 'dark' | 'system') {
   const [systemDark, setSystemDark] = useState(false);
@@ -32,51 +24,38 @@ function useResolvedColorMode(preference: 'light' | 'dark' | 'system') {
   return { resolved, toggle };
 }
 
-/**
- * Applies EventLab CSS theme tokens on the invite root.
- * All packages should wrap their UI in this (or equivalent) so Host Tailwind
- * petal/font utilities + inline var(--el-*) stay in sync.
- */
 export default function ThemeRoot({
   data,
-  preset = WEDDING_BASIC_DEFAULT_THEME,
-  className = 'el-invite-root',
-  style,
   children,
 }: {
-  data?: TemplateEventData | Record<string, unknown> | null;
-  preset?: ThemeTokens;
-  className?: string;
-  style?: CSSProperties;
+  data?: Record<string, unknown> | null;
   children: ReactNode;
 }) {
-  const tokens = resolveThemeTokens(data, preset);
-  const cssVars = themeToCssVars(tokens);
-  const storedCss = readStoredThemeCss(data);
+  const theme = resolveTheme(data);
+  const css = readStoredThemeCss(data);
   const effects = readInviteEffects(data);
   const color = useResolvedColorMode(effects.colorMode);
 
   return (
     <div
-      className={className}
+      className="el-invite-root"
       data-el-theme="1"
       data-el-color={color.resolved}
       style={{
-        ...cssVars,
+        ...themeToCssVars(theme),
         color: 'var(--el-ink)',
-        fontFamily: 'var(--el-font-body)',
         backgroundColor: 'var(--el-bg)',
-        ...style,
+        fontFamily: 'var(--el-font-sans)',
+        minHeight: '100%',
       }}
     >
-      {storedCss ? <style>{storedCss}</style> : null}
+      {css ? <style>{css}</style> : null}
       {children}
       <button
         type="button"
         onClick={color.toggle}
-        className="fixed bottom-6 left-6 z-[60] rounded-full border border-white/40 px-3 py-2 text-xs font-medium shadow-lg"
+        className="fixed bottom-6 left-6 z-[70] rounded-full px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em]"
         style={{ background: 'var(--el-accent)', color: 'var(--el-on-accent)' }}
-        aria-label={color.resolved === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       >
         {color.resolved === 'dark' ? 'Sáng' : 'Tối'}
       </button>
