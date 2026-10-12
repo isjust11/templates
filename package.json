@@ -5,8 +5,7 @@
   "workspaces": [
     "wedding-invite",
     "wedding-basic",
-    "wedding-invite2",
-    "wedding-modern"
+    "wedding-invite2"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=wedding-invite",
