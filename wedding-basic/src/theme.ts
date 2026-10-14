@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { isEffectEnabled } from '@eventlab/effects/catalog';
 import type { ConfigurableField, FieldConfig, TemplateEventData, ThemeInput } from './types';
 
 export type { ThemeInput };
@@ -197,24 +198,20 @@ export type InviteEffects = {
   autoScrollSpeed: 'slow' | 'normal' | 'fast';
 };
 
-function isEnabledFlag(value: unknown): boolean {
-  return value === true || value === 'true' || value === 1 || value === '1';
-}
-
-/** Music, motion, color mode, and auto-scroll stored on `data.theme`. */
+/** Music, motion, color mode, and auto-scroll stored on `data.theme`. Flags come from `@eventlab/effects`. */
 export function readInviteEffects(data?: Record<string, unknown> | TemplateEventData | null): InviteEffects {
   const theme = (data ? readThemeBlob(data) : {}) as ThemeInput;
   const colorMode = theme.colorMode === 'dark' || theme.colorMode === 'system' ? theme.colorMode : 'light';
   const autoScrollSpeed =
     theme.autoScrollSpeed === 'slow' || theme.autoScrollSpeed === 'fast' ? theme.autoScrollSpeed : 'normal';
   return {
-    musicEnabled: theme.musicEnabled !== false,
+    musicEnabled: isEffectEnabled(theme, 'music'),
     musicUrl: typeof theme.musicUrl === 'string' ? theme.musicUrl.trim() : '',
-    confetti: theme.effectConfetti !== false,
-    petals: theme.effectPetals !== false,
-    envelope: theme.effectEnvelope !== false,
+    confetti: isEffectEnabled(theme, 'confetti'),
+    petals: isEffectEnabled(theme, 'petals'),
+    envelope: isEffectEnabled(theme, 'envelope'),
     colorMode,
-    autoScroll: isEnabledFlag(theme.autoScroll),
+    autoScroll: isEffectEnabled(theme, 'auto-scroll'),
     autoScrollSpeed,
   };
 }

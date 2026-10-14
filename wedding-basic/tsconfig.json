@@ -9,7 +9,12 @@
     "skipLibCheck": true,
     "noEmit": true,
     "isolatedModules": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@eventlab/effects": ["../effects/src/index.ts"],
+      "@eventlab/effects/catalog": ["../effects/src/catalog.ts"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useConfettiPlayer, useInviteMusic } from '@eventlab/effects';
 import { useTemplateData } from './TemplateDataProvider';
 import { readInviteEffects } from './theme';
 
@@ -13,88 +14,27 @@ interface EnvelopeProps {
   onOpened?: () => void;
 }
 
-type ConfettiFunction = (options?: unknown) => void;
-
 export default function Envelope({ children, brideName, groomName, coverImage, onOpened }: EnvelopeProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [confettiModule, setConfettiModule] = useState<ConfettiFunction | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const effects = readInviteEffects(useTemplateData());
-
-  const startMusic = useCallback(() => {
-    if (!effects.musicEnabled || audioRef.current) return;
-    const audio = new Audio(effects.musicUrl || '/music/song.mp3');
-    audio.loop = true;
-    audio.play().catch(() => {});
-    audioRef.current = audio;
-  }, [effects.musicEnabled, effects.musicUrl]);
-
-  const toggleMute = useCallback(() => {
-    if (!audioRef.current) return;
-    audioRef.current.muted = !audioRef.current.muted;
-    setIsMuted(audioRef.current.muted);
-  }, []);
-
-  useEffect(() => {
-    if (!effects.confetti) return;
-    import('canvas-confetti').then((module) => {
-      setConfettiModule(() => module.default);
-    });
-  }, [effects.confetti]);
+  const playConfetti = useConfettiPlayer(effects.confetti);
+  const { start: startMusic, toggleMute, muted: isMuted } = useInviteMusic(
+    effects.musicEnabled,
+    effects.musicUrl,
+  );
 
   const handleOpen = async () => {
     if (isOpening) return;
 
-    // Start music and opening animation
     startMusic();
     setIsOpening(true);
 
-    // After flap opens, show content
     setTimeout(() => {
       setIsOpened(true);
       onOpened?.();
-      triggerConfetti();
+      playConfetti();
     }, 1200);
-  };
-
-  const triggerConfetti = () => {
-    if (!effects.confetti || !confettiModule) return;
-
-    const duration = 3000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-
-    const randomInRange = (min: number, max: number) => {
-      return Math.random() * (max - min) + min;
-    };
-
-    const interval = setInterval(() => {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-
-      // Confetti from left
-      confettiModule({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        colors: ['#717561', '#8a9273', '#9eaa8a', '#f7f4e6', '#ede8d5'],
-      });
-
-      // Confetti from right
-      confettiModule({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        colors: ['#717561', '#8a9273', '#9eaa8a', '#f7f4e6', '#ede8d5'],
-      });
-    }, 250);
   };
 
   const handleSkip = (e: React.MouseEvent) => {
@@ -270,6 +210,7 @@ export default function Envelope({ children, brideName, groomName, coverImage, o
             transition={{ duration: 0.3, delay: 1 }}
             className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center"
             style={{ background: 'linear-gradient(135deg, #ff9db7, #ef4065)', boxShadow: '0 6px 24px rgba(255,100,140,0.3)' }}
+            onClick={toggleMute}
             aria-label={isMuted ? 'Unmute music' : 'Mute music'}
           >
             {isMuted ? (
