@@ -24,7 +24,7 @@ export default function WeddingInvite2Template({
   eventSlug?: string;
 }) {
   const data = asData(raw);
-  const isVi = (data.locale || 'vi').startsWith('vi');
+  const isVi = (data.locale || 'vi');
 
   return (
     <ThemeRoot data={data as Record<string, unknown>}>

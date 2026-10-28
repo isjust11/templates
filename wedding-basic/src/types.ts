@@ -34,6 +34,14 @@ export type ThemeInput = {
   fontScript?: string;
   fontBody?: string;
   fontSans?: string;
+  musicEnabled?: boolean;
+  musicUrl?: string;
+  effectConfetti?: boolean;
+  effectPetals?: boolean;
+  effectEnvelope?: boolean;
+  colorMode?: 'light' | 'dark' | 'system';
+  autoScroll?: boolean;
+  autoScrollSpeed?: 'slow' | 'normal' | 'fast';
   scale?: Partial<{
     50: string;
     100: string;
@@ -54,7 +62,7 @@ export type TemplateEventData = {
   theme?: ThemeInput;
   coverImage?: string;
   backgroundImage?: string;
-  album?: string[];
+  album?: Array<string | { url?: string; image?: string }>;
   brideName: ConfigurableField<string>;
   groomName: ConfigurableField<string>;
   eventDate: ConfigurableField<string>;
