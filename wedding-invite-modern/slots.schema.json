@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeddingInviteModernTemplateSlots",
+  "description": "Typed data contract for wedding-invite-modern (editorial single-page invite)",
+  "type": "object",
+  "required": [
+    "brideName",
+    "groomName",
+    "eventDate",
+    "eventDateDisplay",
+    "city",
+    "venue"
+  ],
+  "properties": {
+    "theme": {
+      "type": "object",
+      "description": "Global skin → CSS vars --el-* (accent, fonts, scale) + effect flags",
+      "slot": "theme.root",
+      "properties": {
+        "accent": { "type": "string" },
+        "accentSoft": { "type": "string" },
+        "ink": { "type": "string" },
+        "muted": { "type": "string" },
+        "bg": { "type": "string" },
+        "bgSoft": { "type": "string" },
+        "onAccent": { "type": "string" },
+        "fontDisplay": { "type": "string" },
+        "fontScript": { "type": "string" },
+        "fontBody": { "type": "string" },
+        "fontSans": { "type": "string" }
+      }
+    },
+    "coverImage": { "type": "string", "slot": "image.cover" },
+    "brideName": { "type": "string", "slot": "text.brideName" },
+    "groomName": { "type": "string", "slot": "text.groomName" },
+    "eventDate": {
+      "type": "string",
+      "format": "date-time",
+      "slot": "datetime.eventDate"
+    },
+    "eventDateDisplay": { "type": "string", "slot": "text.eventDateDisplay" },
+    "city": { "type": "string", "slot": "text.city" },
+    "venue": { "type": "string", "slot": "text.venue" },
+    "address": { "type": "string", "slot": "text.address" },
+    "mapsUrl": { "type": "string", "slot": "url.maps" },
+    "hosts": { "type": "string", "slot": "text.hosts" },
+    "quote": { "type": "string", "slot": "text.quote" },
+    "welcomeLines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "slot": "text.welcomeLines"
+    },
+    "groomFather": { "type": "string", "slot": "text.groomFather" },
+    "groomMother": { "type": "string", "slot": "text.groomMother" },
+    "groomAddress": { "type": "string", "slot": "text.groomAddress" },
+    "brideFather": { "type": "string", "slot": "text.brideFather" },
+    "brideMother": { "type": "string", "slot": "text.brideMother" },
+    "brideAddress": { "type": "string", "slot": "text.brideAddress" },
+    "groomPhoto": { "type": "string", "slot": "image.groom" },
+    "bridePhoto": { "type": "string", "slot": "image.bride" },
+    "groomBio": { "type": "string", "slot": "text.groomBio" },
+    "brideBio": { "type": "string", "slot": "text.brideBio" },
+    "story": {
+      "type": "array",
+      "slot": "list.story",
+      "items": {
+        "type": "object",
+        "required": ["date", "title"],
+        "properties": {
+          "date": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string", "slot": "image.story" }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "slot": "list.events",
+      "items": {
+        "type": "object",
+        "required": ["label", "time"],
+        "properties": {
+          "label": { "type": "string" },
+          "time": { "type": "string" },
+          "dateDisplay": { "type": "string" },
+          "venue": { "type": "string" },
+          "address": { "type": "string" },
+          "mapsUrl": { "type": "string" }
+        }
+      }
+    },
+    "album": {
+      "type": "array",
+      "slot": "list.album",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "slot": "image.album" }
+        }
+      }
+    },
+    "dressCodeNote": { "type": "string", "slot": "text.dressCodeNote" },
+    "dressCodeColors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "slot": "text.dressCodeColors"
+    },
+    "gifts": {
+      "type": "array",
+      "slot": "list.gifts",
+      "items": {
+        "type": "object",
+        "required": ["owner", "bank", "accountNumber"],
+        "properties": {
+          "owner": { "type": "string" },
+          "bank": { "type": "string" },
+          "accountNumber": { "type": "string" },
+          "qrImage": { "type": "string", "slot": "image.qr" }
+        }
+      }
+    },
+    "rsvpDeadline": { "type": "string", "slot": "text.rsvpDeadline" },
+    "footerMessage": { "type": "string", "slot": "text.footerMessage" },
+    "footerCredit": { "type": "string", "slot": "text.footerCredit" },
+    "locale": { "type": "string", "slot": "text.locale" }
+  }
+}
