@@ -17,7 +17,7 @@ export type ThemeTokens = {
 
 type ThemeBlob = Partial<ThemeTokens> & Record<string, unknown>;
 
-/** Ivory / ink / mocha — editorial default skin. */
+/** Ivory / ink / mocha with calligraphic names. Every default family covers Vietnamese. */
 export const WEDDING_MODERN_DEFAULT_THEME: ThemeTokens = {
   accent: '#8b5e45',
   accentSoft: '#d8c3b1',
@@ -26,15 +26,52 @@ export const WEDDING_MODERN_DEFAULT_THEME: ThemeTokens = {
   bg: '#f5f1ea',
   bgSoft: '#ebe4d8',
   onAccent: '#f9f6f1',
-  fontDisplay: '"Cormorant Garamond", "Times New Roman", serif',
-  fontScript: '"Cormorant Garamond", "Times New Roman", serif',
-  fontBody: '"Manrope", system-ui, sans-serif',
-  fontSans: '"Manrope", system-ui, sans-serif',
+  fontDisplay: '"Playfair Display", "Times New Roman", serif',
+  fontScript: '"Great Vibes", "Playfair Display", cursive',
+  fontBody: '"Be Vietnam Pro", system-ui, sans-serif',
+  fontSans: '"Be Vietnam Pro", system-ui, sans-serif',
 };
 
-/** Google Fonts for the default skin; custom fonts set via theme must be loaded by the host. */
-export const WEDDING_MODERN_FONTS_HREF =
-  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap';
+/** Axes requested per family. Unknown families load their regular face only. */
+const FONT_AXES: Record<string, string> = {
+  'Playfair Display': 'ital,wght@0,400;0,500;0,600;1,400;1,500',
+  'Cormorant Garamond': 'ital,wght@0,300;0,400;0,500;1,300;1,400',
+  'Be Vietnam Pro': 'wght@300;400;500;600',
+  Manrope: 'wght@300;400;500;600',
+  Lora: 'ital,wght@0,400;0,500;1,400',
+  'DM Sans': 'wght@400;500;600',
+};
+
+const NOT_ON_GOOGLE = new Set([
+  'serif',
+  'sans-serif',
+  'cursive',
+  'monospace',
+  'system-ui',
+  'times new roman',
+  'georgia',
+  'arial',
+  'helvetica',
+]);
+
+/**
+ * One Google Fonts stylesheet per family named first in each theme font token, so fonts typed in
+ * admin load too. A family Google does not have fails on its own link without blocking the rest.
+ */
+export function fontStylesheets(tokens: ThemeTokens): string[] {
+  const families = [tokens.fontDisplay, tokens.fontScript, tokens.fontBody, tokens.fontSans]
+    .map((stack) => stack.split(',')[0]?.trim().replace(/^["']|["']$/g, '') || '')
+    .filter((name) => name && !NOT_ON_GOOGLE.has(name.toLowerCase()));
+  return Array.from(new Set(families)).map((name) => {
+    const axes = FONT_AXES[name];
+    const family = encodeURIComponent(name).replace(/%20/g, '+');
+    return `https://fonts.googleapis.com/css2?family=${family}${axes ? `:${axes}` : ''}&display=swap`;
+  });
+}
+
+/** Only the 囍 glyph, so the CJK font download stays tiny. */
+export const DOUBLE_HAPPINESS_FONT_HREF =
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&text=%E5%9B%8D&display=swap';
 
 /** Accepts the shapes admin stores on `eventData.theme`: flat, `{ tokens }`, or `{ type: 'THEME', value }`. */
 function readThemeBlob(raw: unknown): ThemeBlob {
@@ -109,13 +146,14 @@ export type InviteEffects = {
   musicUrl: string;
   confetti: boolean;
   gate: boolean;
-  /** The `petals` ambient flag, rendered here as soft light motes. */
-  sparkles: boolean;
+  /** Falling blossom petals on the page and gold dust on the doors. */
+  petals: boolean;
+  hearts: boolean;
   autoScroll: boolean;
   autoScrollSpeed: 'slow' | 'normal' | 'fast';
 };
 
-/** Flags from `@eventlab/effects`. The envelope flag drives this template's cover gate. */
+/** Flags from `@eventlab/effects`. The envelope flag drives this template's door gate. */
 export function readInviteEffects(data: Record<string, unknown> | null | undefined): InviteEffects {
   const theme = readTheme(data);
   const speed = theme.autoScrollSpeed;
@@ -124,7 +162,8 @@ export function readInviteEffects(data: Record<string, unknown> | null | undefin
     musicUrl: typeof theme.musicUrl === 'string' ? theme.musicUrl.trim() : '',
     confetti: isEffectEnabled(theme, 'confetti'),
     gate: isEffectEnabled(theme, 'envelope'),
-    sparkles: isEffectEnabled(theme, 'petals'),
+    petals: isEffectEnabled(theme, 'petals'),
+    hearts: isEffectEnabled(theme, 'hearts'),
     autoScroll: isEffectEnabled(theme, 'auto-scroll'),
     autoScrollSpeed: speed === 'slow' || speed === 'fast' ? speed : 'normal',
   };

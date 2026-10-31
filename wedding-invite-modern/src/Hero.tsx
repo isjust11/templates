@@ -5,6 +5,8 @@ import { useRef } from 'react';
 import { useModern } from './context';
 import { dotDate, fieldStyle, imageUrl, text, weekday } from './fields';
 import { EASE, EASE_IN_OUT, InkReveal, SplitText } from './Reveal';
+import { BlossomBranch } from './Blossom';
+import Garden from './Garden';
 
 /** Intro waits for `revealed` so it plays after the gate slides away, not behind it. */
 export default function Hero() {
@@ -22,6 +24,17 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="elm-hero" id="top">
+      <Garden preset="hero" />
+      <motion.div
+        className="elm-hero__blossom"
+        initial={{ opacity: 0, x: 40 }}
+        animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
+        transition={{ duration: 1.6, delay: 0.8, ease: EASE }}
+      >
+        <div className="elm-sway">
+          <BlossomBranch flip />
+        </div>
+      </motion.div>
       <div className="elm-container elm-hero__inner">
         <motion.div className="elm-hero__bar" {...fade(0.1)}>
           <span className="elm-eyebrow">{t.saveTheDate}</span>

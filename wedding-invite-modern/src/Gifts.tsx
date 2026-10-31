@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useModern } from './context';
 import { imageUrl, list, text, type GiftItem } from './fields';
 import Reveal, { LineReveal } from './Reveal';
+import Garden from './Garden';
 
 function CopyButton({ value }: { value: string }) {
   const { t } = useModern();
@@ -36,6 +37,7 @@ export default function Gifts() {
 
   return (
     <section className="elm-section" id="gifts" style={{ background: 'var(--el-bg-soft)' }}>
+      <Garden preset="gifts" />
       <div className="elm-narrow" style={{ textAlign: 'center' }}>
         <div className="elm-head elm-head--center">
           <span className="elm-eyebrow">{t.giftBox}</span>

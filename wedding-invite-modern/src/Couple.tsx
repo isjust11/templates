@@ -3,6 +3,7 @@
 import { useModern } from './context';
 import { imageUrl, text } from './fields';
 import Reveal, { FadeImage, LineReveal } from './Reveal';
+import Garden from './Garden';
 
 export default function Couple() {
   const { data, t, groom, bride } = useModern();
@@ -14,6 +15,7 @@ export default function Couple() {
 
   return (
     <section className="elm-section" id="couple" style={{ paddingTop: 0 }}>
+      <Garden preset="couple" />
       <div className="elm-container">
         <div className="elm-head">
           <span className="elm-eyebrow">{t.theCouple}</span>

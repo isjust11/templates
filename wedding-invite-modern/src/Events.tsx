@@ -3,6 +3,7 @@
 import { useModern } from './context';
 import { googleCalendarUrl, list, mapsEmbedUrl, mapsSearchUrl, text, type EventItem } from './fields';
 import Reveal, { LineReveal } from './Reveal';
+import Garden from './Garden';
 
 type Resolved = {
   label: string;
@@ -47,6 +48,7 @@ export default function Events() {
 
   return (
     <section className="elm-section" id="schedule" style={{ background: 'var(--el-bg-soft)' }}>
+      <Garden preset="events" />
       <div className="elm-container">
         <div className="elm-head">
           <span className="elm-eyebrow">{text(data.eventDateDisplay)}</span>

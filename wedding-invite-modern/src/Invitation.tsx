@@ -2,7 +2,9 @@
 
 import { useModern } from './context';
 import { fieldStyle, list, text } from './fields';
-import Reveal from './Reveal';
+import { motion } from 'framer-motion';
+import Garden from './Garden';
+import Reveal, { EASE } from './Reveal';
 
 function ParentsColumn({ label, father, mother, address }: { label: string; father: string; mother: string; address: string }) {
   return (
@@ -25,7 +27,15 @@ export default function Invitation({ guestName }: { guestName: string }) {
 
   return (
     <section className="elm-section" id="invitation">
-      <div className="elm-narrow">
+      <Garden preset="invitation" />
+      <motion.div
+        className="elm-narrow elm-paper"
+        initial={{ opacity: 0, y: 70, rotateX: 12 }}
+        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+        viewport={{ once: true, margin: '0px 0px -12% 0px' }}
+        transition={{ duration: 1.4, ease: EASE }}
+        style={{ transformPerspective: 1200 }}
+      >
         {quote ? (
           <Reveal>
             <p className="elm-quote" style={fieldStyle(data.quote)}>
@@ -72,7 +82,7 @@ export default function Invitation({ guestName }: { guestName: string }) {
             </p>
           ) : null}
         </Reveal>
-      </div>
+      </motion.div>
     </section>
   );
 }

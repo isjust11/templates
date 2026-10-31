@@ -3,6 +3,7 @@
 import { useModern } from './context';
 import { dotDate, fieldStyle, text } from './fields';
 import { InkReveal } from './Reveal';
+import Garden from './Garden';
 
 export default function Footer() {
   const { data, t, groom, bride, eventDate } = useModern();
@@ -10,6 +11,7 @@ export default function Footer() {
 
   return (
     <footer className="elm-footer">
+      <Garden preset="footer" />
       <div className="elm-container">
         {message ? (
           <p className="elm-muted" style={{ margin: '0 auto 28px', maxWidth: 520, ...fieldStyle(data.footerMessage) }}>

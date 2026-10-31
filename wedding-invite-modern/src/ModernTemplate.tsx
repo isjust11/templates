@@ -6,7 +6,8 @@ import { AutoScroll, useConfettiPlayer, useInviteMusic } from '@eventlab/effects
 import { ModernProvider, useLowPower, type ModernContextValue } from './context';
 import { dictFor, parseEventDate, resolveLocale, text, type ModernEventData } from './fields';
 import {
-  WEDDING_MODERN_FONTS_HREF,
+  DOUBLE_HAPPINESS_FONT_HREF,
+  fontStylesheets,
   readInviteEffects,
   readStoredThemeCss,
   resolveThemeTokens,
@@ -14,6 +15,8 @@ import {
 } from './theme';
 import { MODERN_CSS } from './styles';
 import Gate from './Gate';
+import Floaters from './Floaters';
+import { FloraDefs } from './Flora';
 import Hero from './Hero';
 import Marquee from './Marquee';
 import Invitation from './Invitation';
@@ -73,6 +76,8 @@ export default function ModernTemplate({
 
   const lowPower = useLowPower();
   const [opened, setOpened] = useState(!effects.gate || isEditing);
+  const [revealed, setRevealed] = useState(opened);
+  const [heartBurst, setHeartBurst] = useState(0);
   const [musicStarted, setMusicStarted] = useState(false);
   const music = useInviteMusic(effects.musicEnabled, effects.musicUrl);
   const playConfetti = useConfettiPlayer(effects.confetti && !lowPower);
@@ -88,21 +93,27 @@ export default function ModernTemplate({
       groom: text(data.groomName),
       bride: text(data.brideName),
       eventSlug,
-      revealed: opened,
+      revealed,
       lowPower,
     };
-  }, [data, eventSlug, opened, lowPower]);
+  }, [data, eventSlug, revealed, lowPower]);
 
-  // Music must start inside the tap; the rest waits for the envelope animation to finish.
+  // Music must start inside the tap; the rest follows the door animation.
   const begin = useCallback(() => {
     music.start();
     setMusicStarted(effects.musicEnabled);
-  }, [music, effects.musicEnabled]);
+    if (effects.hearts) setHeartBurst((n) => n + 1);
+  }, [music, effects.musicEnabled, effects.hearts]);
+
+  const reveal = useCallback(() => setRevealed(true), []);
 
   const finish = useCallback(() => {
+    setRevealed(true);
     setOpened(true);
-    window.setTimeout(playConfetti, 500);
+    window.setTimeout(playConfetti, 300);
   }, [playConfetti]);
+
+  const floaters = !lowPower && (effects.hearts || effects.petals);
 
   const onMusicClick = () => {
     if (!musicStarted) {
@@ -123,21 +134,35 @@ export default function ModernTemplate({
           style={themeToCssVars(tokens)}
         >
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="stylesheet" href={WEDDING_MODERN_FONTS_HREF} precedence="default" />
+          {fontStylesheets(tokens).map((href) => (
+            <link key={href} rel="stylesheet" href={href} precedence="default" />
+          ))}
+          <link rel="stylesheet" href={DOUBLE_HAPPINESS_FONT_HREF} precedence="default" />
           <style dangerouslySetInnerHTML={{ __html: MODERN_CSS }} />
           {storedCss ? <style dangerouslySetInnerHTML={{ __html: storedCss }} /> : null}
+          <FloraDefs />
+          <div className="elm-ambient" aria-hidden="true" />
 
           <AnimatePresence>
             {!opened ? (
               <Gate
                 key="gate"
                 guestName={guestName}
-                sparkles={effects.sparkles && !lowPower}
+                sparkles={effects.petals && !lowPower}
                 onBegin={begin}
+                onReveal={reveal}
                 onDone={finish}
               />
             ) : null}
           </AnimatePresence>
+
+          {floaters ? (
+            <Floaters
+              hearts={effects.hearts && revealed && !isEditing}
+              petals={effects.petals && revealed && !isEditing}
+              burst={heartBurst}
+            />
+          ) : null}
 
           {opened ? <ScrollProgress /> : null}
 

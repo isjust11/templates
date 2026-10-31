@@ -5,6 +5,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useModern } from './context';
 import { text } from './fields';
 import Reveal, { LineReveal } from './Reveal';
+import Garden from './Garden';
 
 export default function Rsvp({ guestName }: { guestName: string }) {
   const { data, t, eventSlug } = useModern();
@@ -61,6 +62,7 @@ export default function Rsvp({ guestName }: { guestName: string }) {
 
   return (
     <section className="elm-section" id="rsvp">
+      <Garden preset="rsvp" />
       <div className="elm-container elm-rsvp">
         <div className="elm-head" style={{ marginBottom: 0 }}>
           <span className="elm-eyebrow">RSVP</span>

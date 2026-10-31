@@ -2,35 +2,41 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { BlossomBranch } from './Blossom';
 import { useModern } from './context';
-import { dotDate, imageUrl } from './fields';
 import { EASE, EASE_IN_OUT, InkReveal, SplitText } from './Reveal';
 import Sparkles from './Sparkles';
 
-type Phase = 'idle' | 'breaking' | 'letter';
+const SIDES = ['left', 'right'] as const;
 
-const initial = (name: string) => Array.from(name.trim().normalize('NFC').split(/\s+/).pop() || '')[0] || '';
+const BRANCHES = [
+  { key: 'tl', flip: false, vertical: false, dx: -80 },
+  { key: 'tr', flip: true, vertical: false, dx: 80 },
+  { key: 'bl', flip: false, vertical: true, dx: -80 },
+  { key: 'br', flip: true, vertical: true, dx: 80 },
+] as const;
 
 /**
- * Full-screen cover with a wax-sealed envelope. Tap → seal breaks, flap opens, card rises,
- * then the cover slides away. `onBegin` fires inside the tap (browsers only allow audio there).
+ * Red lacquer double doors with a gold 囍 medallion split across the seam. Tap → the doors swing
+ * open onto the invite. `onBegin` fires inside the tap (browsers only allow audio there),
+ * `onReveal` once the doors start to part, `onDone` when they are fully open.
  */
 export default function Gate({
   guestName,
   sparkles,
   onBegin,
+  onReveal,
   onDone,
 }: {
   guestName: string;
   sparkles: boolean;
   onBegin: () => void;
+  onReveal: () => void;
   onDone: () => void;
 }) {
-  const { data, t, groom, bride, eventDate } = useModern();
-  const cover = imageUrl(data.coverImage);
-  const [phase, setPhase] = useState<Phase>('idle');
+  const { t, groom, bride } = useModern();
+  const [opening, setOpening] = useState(false);
   const timers = useRef<number[]>([]);
-  const monogram = `${initial(groom)}${initial(bride)}`;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -44,40 +50,63 @@ export default function Gate({
   }, []);
 
   const open = () => {
-    if (phase !== 'idle') return;
+    if (opening) return;
     onBegin();
-    setPhase('breaking');
-    timers.current.push(
-      window.setTimeout(() => setPhase('letter'), 900),
-      window.setTimeout(onDone, 2300),
-    );
+    setOpening(true);
+    timers.current.push(window.setTimeout(onReveal, 450), window.setTimeout(onDone, 2300));
   };
 
-  const opening = phase !== 'idle';
-
   return (
-    <motion.div
-      className="elm-gate"
-      initial={{ y: 0 }}
-      exit={{ y: '-100%' }}
-      transition={{ duration: 1.1, ease: EASE_IN_OUT }}
-    >
-      {cover ? (
-        <motion.div
-          className="elm-gate__bg"
-          style={{ backgroundImage: `url("${cover}")` }}
-          initial={{ scale: 1.12 }}
-          animate={{ scale: opening ? 1.18 : 1 }}
-          transition={{ duration: opening ? 2.4 : 6, ease: 'easeOut' }}
-        />
+    <motion.div className="elm-doorgate" exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
+      <motion.div
+        className="elm-doorgate__light"
+        initial={{ opacity: 0 }}
+        animate={opening ? { opacity: [0, 1, 0] } : { opacity: 0 }}
+        transition={{ duration: 2.2, times: [0, 0.3, 1], ease: 'easeOut' }}
+      />
+
+      <button type="button" className="elm-doorgate__stage" onClick={open} disabled={opening} aria-label={t.open}>
+        {SIDES.map((side) => (
+          <motion.span
+            key={side}
+            className={`elm-door elm-door--${side}`}
+            initial={{ rotateY: 0 }}
+            animate={{ rotateY: opening ? (side === 'left' ? -112 : 112) : 0 }}
+            transition={{ duration: 1.8, delay: 0.35, ease: EASE_IN_OUT }}
+          >
+            <span className="elm-door__panel elm-door__panel--top" />
+            <span className="elm-door__panel elm-door__panel--bottom" />
+            <span className="elm-door__seal">
+              <span className="elm-door__hy">囍</span>
+            </span>
+          </motion.span>
+        ))}
+      </button>
+
+      {sparkles ? (
+        <div className="elm-doorgate__dust">
+          <Sparkles count={22} color="246,214,140" maxAlpha={0.75} />
+        </div>
       ) : null}
-      <div className="elm-gate__shade" />
-      {sparkles ? <Sparkles count={26} /> : null}
+
+      {BRANCHES.map((branch, i) => (
+        <motion.div
+          key={branch.key}
+          className={`elm-doorgate__branch elm-doorgate__branch--${branch.key}`}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={opening ? { opacity: 0, x: branch.dx, scale: 1.05 } : { opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: opening ? 0.9 : 1.4, delay: opening ? 0.2 : 0.4 + i * 0.15, ease: EASE }}
+        >
+          <div className="elm-sway" style={{ animationDelay: `${i * -1.3}s` }}>
+            <BlossomBranch flip={branch.flip} style={branch.vertical ? { transform: 'scaleY(-1)' } : undefined} />
+          </div>
+        </motion.div>
+      ))}
 
       <motion.div
-        className="elm-gate__top"
-        animate={{ opacity: opening ? 0 : 1, y: opening ? -16 : 0 }}
-        transition={{ duration: 0.6 }}
+        className="elm-doorgate__top"
+        animate={{ opacity: opening ? 0 : 1, y: opening ? -20 : 0 }}
+        transition={{ duration: 0.5 }}
       >
         <motion.p
           className="elm-eyebrow"
@@ -87,72 +116,17 @@ export default function Gate({
         >
           {t.theWeddingOf}
         </motion.p>
-        <h1 className="elm-display elm-gate__names">
+        <h1 className="elm-display elm-doorgate__names">
           <SplitText text={groom} play delay={0.35} />
-          <InkReveal play delay={0.9} className="elm-italic elm-gate__amp">
+          <InkReveal play delay={0.9} className="elm-italic elm-doorgate__amp">
             &amp;
           </InkReveal>
           <SplitText text={bride} play delay={0.6} />
         </h1>
       </motion.div>
 
-      <motion.button
-        type="button"
-        className="elm-env"
-        onClick={open}
-        aria-label={t.open}
-        initial={{ opacity: 0, y: 40, rotate: -2 }}
-        animate={{ opacity: 1, y: opening ? 24 : 0, rotate: opening ? 0 : -2 }}
-        transition={{ delay: opening ? 0 : 1, duration: 1, ease: EASE }}
-      >
-        <span className="elm-env__back" />
-        <motion.span
-          className="elm-env__letter"
-          style={{ zIndex: 2 }}
-          animate={{ y: phase === 'letter' ? '-62%' : '0%' }}
-          transition={{ duration: 1.1, ease: EASE }}
-        >
-          <span className="elm-eyebrow" style={{ fontSize: 9 }}>
-            {t.invitation}
-          </span>
-          <span className="elm-env__letter-names">
-            {groom} <span className="elm-italic">&amp;</span> {bride}
-          </span>
-          <span className="elm-eyebrow" style={{ fontSize: 9 }}>
-            {dotDate(eventDate)}
-          </span>
-        </motion.span>
-        <span className="elm-env__pocket" />
-        <motion.span
-          className="elm-env__flap"
-          style={{ zIndex: phase === 'letter' ? 1 : 4 }}
-          animate={{ rotateX: opening ? 180 : 0 }}
-          transition={{ duration: 0.9, delay: 0.25, ease: EASE_IN_OUT }}
-        />
-        <motion.span
-          className="elm-env__seal"
-          animate={opening ? { scale: 1 } : { scale: [1, 1.07, 1] }}
-          transition={opening ? { duration: 0.2 } : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          {(['left', 'right'] as const).map((side) => (
-            <motion.span
-              key={side}
-              className={`elm-env__seal-half elm-env__seal-half--${side}`}
-              animate={
-                opening
-                  ? { x: side === 'left' ? -26 : 26, y: 60, rotate: side === 'left' ? -38 : 38, opacity: 0 }
-                  : { x: 0, y: 0, rotate: 0, opacity: 1 }
-              }
-              transition={{ duration: 0.8, ease: [0.5, 0, 0.75, 0] }}
-            >
-              {monogram}
-            </motion.span>
-          ))}
-        </motion.span>
-      </motion.button>
-
       <motion.div
-        className="elm-gate__foot"
+        className="elm-doorgate__foot"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: opening ? 0 : 1, y: 0 }}
         transition={{ delay: opening ? 0 : 1.3, duration: opening ? 0.4 : 1 }}
@@ -160,12 +134,16 @@ export default function Gate({
         {guestName ? (
           <div>
             <p className="elm-eyebrow">{t.dearGuest}</p>
-            <p className="elm-gate__guest" style={{ margin: '6px 0 0' }}>
-              {guestName}
-            </p>
+            <p className="elm-doorgate__guest">{guestName}</p>
           </div>
         ) : null}
-        <p className="elm-eyebrow">{t.tapToOpen}</p>
+        <motion.p
+          className="elm-eyebrow"
+          animate={{ opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {t.tapToOpen}
+        </motion.p>
       </motion.div>
     </motion.div>
   );

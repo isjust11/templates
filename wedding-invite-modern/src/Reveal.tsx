@@ -34,8 +34,18 @@ export default function Reveal({
   );
 }
 
-/** Mask padding keeps Vietnamese diacritics and descenders inside the clip. */
-const MASK: CSSProperties = { overflow: 'hidden', paddingTop: '0.14em', marginTop: '-0.14em', paddingBottom: '0.08em', marginBottom: '-0.08em' };
+/** Mask padding keeps Vietnamese diacritics, descenders and calligraphic swashes inside the clip. */
+const MASK: CSSProperties = {
+  overflow: 'hidden',
+  // an overflow-hidden inline-block sits on its bottom edge and would inflate the line box
+  verticalAlign: 'top',
+  paddingTop: '0.3em',
+  marginTop: '-0.3em',
+  paddingBottom: '0.25em',
+  marginBottom: '-0.25em',
+  paddingInline: '0.25em',
+  marginInline: '-0.25em',
+};
 
 /**
  * Mask-reveal for large display lines. The in-view trigger sits on the visible mask, not on the
