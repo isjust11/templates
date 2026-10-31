@@ -1,0 +1,7 @@
+{
+  "id": "wedding-invite-modern",
+  "name": "Wedding Invite Modern",
+  "entry": "./src/index.tsx",
+  "schema": "./slots.schema.json",
+  "defaultExport": "React component receiving { data }"
+}

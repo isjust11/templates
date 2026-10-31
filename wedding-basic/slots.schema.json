@@ -34,8 +34,13 @@
     "backgroundImage": { "type": "string", "slot": "image.background" },
     "album": {
       "type": "array",
-      "items": { "type": "string" },
-      "slot": "list.album"
+      "slot": "list.album",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "slot": "image.album" }
+        }
+      }
     },
     "brideName": { "type": "string", "slot": "text.brideName" },
     "groomName": { "type": "string", "slot": "text.groomName" },

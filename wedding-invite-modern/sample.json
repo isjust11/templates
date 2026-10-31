@@ -1,0 +1,99 @@
+{
+  "theme": {
+    "accent": "#8b5e45",
+    "accentSoft": "#d8c3b1",
+    "ink": "#1f1c19",
+    "bg": "#f5f1ea",
+    "bgSoft": "#ebe4d8",
+    "effectConfetti": true,
+    "effectEnvelope": true,
+    "musicEnabled": false
+  },
+  "coverImage": "https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80",
+  "groomName": "Hoàng Nam",
+  "brideName": "Minh Anh",
+  "eventDate": "2026-12-20T17:30:00+07:00",
+  "eventDateDisplay": "Chủ nhật, 20 tháng 12, 2026",
+  "city": "TP. Hồ Chí Minh",
+  "venue": "The Reverie Saigon",
+  "address": "22-36 Nguyễn Huệ, Quận 1",
+  "mapsUrl": "",
+  "hosts": "Gia đình hai họ trân trọng báo tin",
+  "quote": "Hai tâm hồn, một nhịp đập — và một chặng đường mới bắt đầu.",
+  "welcomeLines": [
+    "Tới dự buổi tiệc chung vui cùng gia đình chúng tôi",
+    "nhân ngày thành hôn của hai con.",
+    "Sự hiện diện của quý khách là niềm vinh hạnh lớn lao."
+  ],
+  "groomFather": "Ông Nguyễn Văn Hải",
+  "groomMother": "Bà Trần Thị Lan",
+  "groomAddress": "Quận 3, TP. Hồ Chí Minh",
+  "brideFather": "Ông Lê Minh Tuấn",
+  "brideMother": "Bà Phạm Thu Hà",
+  "brideAddress": "Quận Ba Đình, Hà Nội",
+  "groomPhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80",
+  "bridePhoto": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80",
+  "groomBio": "Kỹ sư phần mềm, mê cà phê đen và những chuyến đi không lên kế hoạch.",
+  "brideBio": "Kiến trúc sư, thích hoa cỏ, phim cũ và những buổi chiều mưa Sài Gòn.",
+  "story": [
+    {
+      "date": "2019",
+      "title": "Lần đầu gặp gỡ",
+      "description": "Một buổi workshop mùa thu ở Đà Lạt, hai người ngồi cạnh nhau vì hết ghế.",
+      "image": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&q=80"
+    },
+    {
+      "date": "2022",
+      "title": "Về chung một nhà",
+      "description": "Căn hộ nhỏ với ban công đầy cây và một chú mèo tên Mochi."
+    },
+    {
+      "date": "2025",
+      "title": "Lời cầu hôn",
+      "description": "Hội An, đêm rằm, giữa những chiếc đèn lồng.",
+      "image": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=900&q=80"
+    }
+  ],
+  "events": [
+    {
+      "label": "Lễ vu quy",
+      "time": "09:00",
+      "dateDisplay": "Chủ nhật, 20.12.2026",
+      "venue": "Tư gia nhà gái",
+      "address": "Quận Ba Đình, Hà Nội"
+    },
+    {
+      "label": "Tiệc cưới",
+      "time": "17:30",
+      "dateDisplay": "Chủ nhật, 20.12.2026",
+      "venue": "The Reverie Saigon",
+      "address": "22-36 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh"
+    }
+  ],
+  "album": [
+    { "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80" },
+    { "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=900&q=80" },
+    { "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=900&q=80" },
+    { "url": "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=900&q=80" },
+    { "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=80" },
+    { "url": "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=900&q=80" }
+  ],
+  "dressCodeNote": "Tông trung tính & đất — be, nâu mocha, xanh olive.",
+  "dressCodeColors": ["#efe6da", "#c9b29b", "#8b5e45", "#5f6b4e", "#2b2724"],
+  "gifts": [
+    {
+      "owner": "NGUYEN HOANG NAM",
+      "bank": "Vietcombank",
+      "accountNumber": "0123 4567 8910"
+    },
+    {
+      "owner": "LE MINH ANH",
+      "bank": "Techcombank",
+      "accountNumber": "1903 5555 6666"
+    }
+  ],
+  "rsvpDeadline": "01.12.2026",
+  "footerMessage": "Cảm ơn bạn đã là một phần trong câu chuyện của chúng mình.",
+  "footerCredit": "Made with EventLab",
+  "locale": "vi-VN"
+}

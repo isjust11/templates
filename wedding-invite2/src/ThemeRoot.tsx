@@ -46,12 +46,21 @@ function readTheme(data?: Record<string, unknown> | null): ThemeInput {
   const raw = data?.theme;
   if (!raw || typeof raw !== 'object') return {};
   const obj = raw as Record<string, unknown>;
+  if (obj.tokens && typeof obj.tokens === 'object') return obj.tokens as ThemeInput;
   if (obj.type === 'RAW' || obj.type === 'THEME') {
     const value = obj.value ?? obj.defaul;
-    if (value && typeof value === 'object') return value as ThemeInput;
+    if (value && typeof value === 'object') return readTheme({ theme: value as Record<string, unknown> });
     return {};
   }
   return obj as ThemeInput;
+}
+
+function readStoredCss(data?: Record<string, unknown> | null): string {
+  const raw = data?.theme;
+  if (!raw || typeof raw !== 'object') return '';
+  const obj = raw as Record<string, unknown>;
+  const css = typeof obj.css === 'string' ? obj.css : '';
+  return css.replace(/<\/style/gi, '');
 }
 
 function toVars(data?: Record<string, unknown> | null): CSSProperties {
@@ -86,6 +95,7 @@ export default function ThemeRoot({
   data?: Record<string, unknown> | null;
   children: ReactNode;
 }) {
+  const storedCss = readStoredCss(data);
   return (
     <div
       className="el-invite-root"
@@ -97,6 +107,7 @@ export default function ThemeRoot({
         backgroundColor: 'var(--el-bg)',
       }}
     >
+      {storedCss ? <style>{storedCss}</style> : null}
       {children}
     </div>
   );

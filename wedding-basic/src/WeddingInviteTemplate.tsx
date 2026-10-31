@@ -14,6 +14,9 @@ import { TemplateDataProvider } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
 import { getFieldValue } from './types';
 import type { TemplateEventData } from './types';
+import { readInviteEffects } from './theme';
+import { AutoScroll } from '@eventlab/effects';
+import { useState } from 'react';
 
 /** Complete single-page template; all visible content comes from typed slot data. */
 export default function WeddingInviteTemplate({
@@ -29,6 +32,8 @@ export default function WeddingInviteTemplate({
   onFieldChange?: (fieldKey: keyof TemplateEventData, value: unknown) => void;
   onUploadImage?: (file: File) => Promise<string>;
 }) {
+  const effects = readInviteEffects(data);
+  const [inviteOpen, setInviteOpen] = useState(false);
   return (
     <ThemeRoot data={data}>
       <TemplateDataProvider
@@ -37,10 +42,15 @@ export default function WeddingInviteTemplate({
         onFieldChange={onFieldChange}
         onUploadImage={onUploadImage}
       >
+        <AutoScroll
+          enabled={effects.autoScroll && inviteOpen && !isEditing}
+          speed={effects.autoScrollSpeed}
+        />
         <Envelope
           brideName={getFieldValue(data.brideName) || ''}
           groomName={getFieldValue(data.groomName) || ''}
           coverImage={data.coverImage}
+          onOpened={() => setInviteOpen(true)}
         >
           <Navigation />
           <main className="min-h-screen" style={{ background: 'var(--el-bg)' }}>
