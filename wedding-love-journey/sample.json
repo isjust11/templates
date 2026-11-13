@@ -1,0 +1,45 @@
+{
+  "theme": {
+    "effectConfetti": true,
+    "effectPetals": true,
+    "effectHearts": true,
+    "effectEnvelope": true,
+    "autoScroll": true,
+    "autoScrollSpeed": "slow",
+    "musicEnabled": false
+  },
+  "coverImage": "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80",
+  "groomName": "Trung Hiếu",
+  "brideName": "Ngọc Ánh",
+  "eventDate": "2026-11-24T17:30:00+07:00",
+  "venue": "Nhà hàng tiệc cưới Forever",
+  "address": "126 Lê Văn Sỹ, Phường 10, Quận Phú Nhuận, TP. Hồ Chí Minh",
+  "mapsUrl": "",
+  "greeting": "dear.",
+  "welcomeLines": [
+    "Tình yêu không làm cho thế giới quay tròn,",
+    "tình yêu là những gì làm cho chuyến đi đáng giá.",
+    "Trân trọng kính mời bạn đến chung vui cùng gia đình chúng mình",
+    "trong ngày trọng đại này."
+  ],
+  "groomPhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80",
+  "bridePhoto": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80",
+  "coupleIntro": "Từ hai con người xa lạ, chúng mình đã cùng nhau đi qua bốn mùa thương nhớ. Hôm nay, hành trình ấy có thêm một trang mới — và chúng mình mong có bạn ở đó.",
+  "album": [
+    "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=900&q=80",
+    "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80",
+    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80",
+    "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=900&q=80",
+    "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=80",
+    "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=900&q=80",
+    "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+  "gifts": [
+    { "owner": "NGUYEN TRUNG HIEU", "bank": "Vietcombank", "accountNumber": "0123 4567 8910" },
+    { "owner": "TRAN NGOC ANH", "bank": "Techcombank", "accountNumber": "1903 5555 6666" }
+  ],
+  "rsvpDeadline": "15.11.2026",
+  "footerMessage": "Cảm ơn bạn đã là một phần trong hành trình yêu của chúng mình.",
+  "locale": "vi-VN"
+}

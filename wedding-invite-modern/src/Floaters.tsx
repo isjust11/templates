@@ -33,10 +33,11 @@ const PETAL_PALETTES: { shape: 'notch' | 'round'; colors: Palette }[] = [
   { shape: 'round', colors: ['#a8243f', '#dc6680', '#f6b8c5'] },
   { shape: 'round', colors: ['#cfa27e', '#eedac4', '#fffaf2'] },
 ];
+/** Blush and rose-gold rather than bright red, so hearts accent the page instead of filling it. */
 const HEART_PALETTES: Palette[] = [
-  ['#9e1631', '#e0405f', '#ffb3c2'],
-  ['#b8264a', '#f06a87', '#ffd0da'],
-  ['#c23a56', '#f58fa5', '#ffe1e7'],
+  ['#c4566f', '#ec9aab', '#fde3e9'],
+  ['#d0788a', '#f3b6c2', '#fff0f3'],
+  ['#b9806a', '#e6b9a5', '#fbeee6'],
 ];
 
 const SPRITE = 96;
@@ -50,14 +51,14 @@ function canvas(size: number) {
   return c;
 }
 
+/** Slim heart with a soft cleft and a long tapered tip, centred on (0,0). */
 function heartPath(ctx: CanvasRenderingContext2D, s: number) {
-  const top = -s * 0.45;
   ctx.beginPath();
-  ctx.moveTo(0, top + s * 0.3);
-  ctx.bezierCurveTo(0, top, -s * 0.5, top, -s * 0.5, top + s * 0.3);
-  ctx.bezierCurveTo(-s * 0.5, top + s * 0.6, 0, top + s * 0.78, 0, top + s);
-  ctx.bezierCurveTo(0, top + s * 0.78, s * 0.5, top + s * 0.6, s * 0.5, top + s * 0.3);
-  ctx.bezierCurveTo(s * 0.5, top, 0, top, 0, top + s * 0.3);
+  ctx.moveTo(0, -s * 0.22);
+  ctx.bezierCurveTo(-s * 0.08, -s * 0.42, -s * 0.46, -s * 0.44, -s * 0.44, -s * 0.12);
+  ctx.bezierCurveTo(-s * 0.42, s * 0.12, -s * 0.12, s * 0.28, 0, s * 0.48);
+  ctx.bezierCurveTo(s * 0.12, s * 0.28, s * 0.42, s * 0.12, s * 0.44, -s * 0.12);
+  ctx.bezierCurveTo(s * 0.46, -s * 0.44, s * 0.08, -s * 0.42, 0, -s * 0.22);
   ctx.closePath();
 }
 
@@ -120,27 +121,21 @@ function paintHeart(c: HTMLCanvasElement, [deep, mid, light]: Palette) {
   const s = SPRITE * 0.62;
   ctx.translate(SPRITE / 2, SPRITE / 2);
   heartPath(ctx, s);
-  const g = ctx.createRadialGradient(-s * 0.16, -s * 0.2, s * 0.02, 0, 0, s * 0.62);
+  const g = ctx.createRadialGradient(-s * 0.14, -s * 0.18, s * 0.02, 0, s * 0.05, s * 0.6);
   g.addColorStop(0, light);
-  g.addColorStop(0.42, mid);
+  g.addColorStop(0.5, mid);
   g.addColorStop(1, deep);
   ctx.shadowColor = mid;
-  ctx.shadowBlur = SPRITE * 0.1;
+  ctx.shadowBlur = SPRITE * 0.05;
   ctx.fillStyle = g;
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.strokeStyle = deep;
-  ctx.globalAlpha = 0.35;
-  ctx.lineWidth = 0.8;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+  ctx.lineWidth = 0.9;
   ctx.stroke();
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.fillStyle = 'rgba(255,255,255,0.32)';
   ctx.beginPath();
-  ctx.ellipse(-s * 0.2, -s * 0.12, s * 0.1, s * 0.055, -0.7, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.beginPath();
-  ctx.arc(-s * 0.07, -s * 0.2, s * 0.025, 0, Math.PI * 2);
+  ctx.ellipse(-s * 0.22, -s * 0.16, s * 0.08, s * 0.04, -0.75, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -176,13 +171,13 @@ function buildSprites() {
 /**
  * Fixed canvas over the page: glossy hearts drift up, blossom and rose petals tumble down on a
  * gusty breeze. Particles sit at random depths, far ones small and blurred, a few close ones
- * large and out of focus. Each change of `burst` releases a wave of hearts. Pauses while hidden.
+ * large and out of focus. Each change of `burst` releases a short trail of hearts. Pauses while hidden.
  */
 export default function Floaters({
   hearts,
   petals,
   burst = 0,
-  heartCount = 10,
+  heartCount = 5,
   petalCount = 20,
 }: {
   hearts: boolean;
@@ -212,7 +207,8 @@ export default function Floaters({
 
     const spawnHeart = (scatter: boolean): Particle => {
       const { width, height } = size.current;
-      const z = depth();
+      // Hearts stay mid-distance: no oversized out-of-focus ones drifting across the text.
+      const z = rand(0.1, 0.8);
       return {
         kind: 'heart',
         sprite: pick(art.hearts),
@@ -220,14 +216,14 @@ export default function Floaters({
         y: scatter ? rand(height * 0.3, height) : height + rand(20, 80),
         z,
         vx: 0,
-        vy: -rand(0.4, 0.8) * (0.5 + z * 0.8),
-        size: rand(16, 26) * (0.5 + z * 1.2),
+        vy: -rand(0.3, 0.55) * (0.6 + z * 0.6),
+        size: rand(10, 16) * (0.6 + z * 0.8),
         rot: rand(-0.3, 0.3),
         vr: 0,
         spin: 0,
         vs: 0,
         phase: rand(0, Math.PI * 2),
-        alpha: z > 0.9 ? 0.45 : 0.4 + z * 0.5,
+        alpha: 0.3 + z * 0.4,
         once: false,
       };
     };
@@ -295,8 +291,10 @@ export default function Floaters({
             if (!p.once) next.push(spawnHeart(false));
             continue;
           }
-          const fade = Math.min(1, Math.max(0, p.y / (height * 0.35)));
-          const beat = 1 + Math.max(0, Math.sin(p.phase * 3)) * 0.05;
+          const fadeOut = Math.min(1, Math.max(0, p.y / (height * 0.35)));
+          const fadeIn = Math.min(1, Math.max(0, (height + 40 - p.y) / 160));
+          const fade = fadeOut * fadeIn;
+          const beat = 1 + Math.max(0, Math.sin(p.phase * 3)) * 0.025;
           const d = p.size * 1.6 * beat;
           ctx.save();
           ctx.translate(p.x, p.y);
@@ -355,23 +353,24 @@ export default function Floaters({
     sprites.current ??= buildSprites();
     const art = sprites.current;
     const { width, height } = size.current;
-    for (let i = 0; i < 38; i++) {
-      const z = rand(0.3, 1);
+    // A light scatter rather than a wall: few hearts, staggered below the fold so they arrive in turn.
+    for (let i = 0; i < 12; i++) {
+      const z = rand(0.3, 0.85);
       particles.current.push({
         kind: 'heart',
         sprite: pick(art.hearts),
-        x: width / 2 + rand(-width * 0.38, width * 0.38),
-        y: height + rand(0, 140),
+        x: width / 2 + rand(-width * 0.34, width * 0.34),
+        y: height + 20 + (i / 12) * height * 0.6 + rand(0, 40),
         z,
-        vx: rand(-1.2, 1.2),
-        vy: -rand(2.2, 4.4) * (0.6 + z * 0.5),
-        size: rand(16, 28) * (0.6 + z * 0.9),
-        rot: rand(-0.4, 0.4),
+        vx: rand(-0.5, 0.5),
+        vy: -rand(1.3, 2.1) * (0.7 + z * 0.4),
+        size: rand(12, 19) * (0.7 + z * 0.5),
+        rot: rand(-0.3, 0.3),
         vr: 0,
         spin: 0,
         vs: 0,
         phase: rand(0, Math.PI * 2),
-        alpha: rand(0.75, 1),
+        alpha: rand(0.55, 0.8),
         once: true,
       });
     }
