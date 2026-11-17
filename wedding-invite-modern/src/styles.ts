@@ -333,14 +333,57 @@ export const MODERN_CSS = `
 .elm-swatches { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 32px; }
 .elm-swatch { width: 56px; height: 56px; border-radius: 999px; border: 1px solid var(--elm-line); box-shadow: inset 0 0 0 4px var(--el-bg); }
 
-/* Gifts */
-.elm-gifts { display: grid; gap: 16px; margin-top: 40px; }
-.elm-gift { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; border: 1px solid var(--elm-line-strong); padding: 20px; text-align: left;
-  background: color-mix(in srgb, var(--el-bg) 80%, transparent); box-shadow: 0 24px 50px -30px rgba(50,28,18,.3); }
-.elm-gift__qr { width: 112px; height: 112px; object-fit: contain; background: #fff; padding: 6px; }
-.elm-gift__acc { font-family: var(--el-font-display); font-size: 26px; letter-spacing: .06em; font-variant-numeric: lining-nums tabular-nums; }
-.elm-copy { border: 0; background: none; padding: 0; font-family: var(--el-font-sans); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--el-accent); text-decoration: underline; text-underline-offset: 4px; }
-@media (min-width: 760px) { .elm-gifts { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); } }
+/* Gifts — QR-forward cards, quiet chrome */
+.elm-gifts__intro { margin: 0 auto 32px; max-width: 36em; line-height: 1.75; }
+.elm-gifts { display: grid; gap: 18px; margin-top: 40px; }
+.elm-gifts--single { max-width: 420px; margin-inline: auto; }
+.elm-gift {
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+  border: 1px solid var(--elm-line-strong); padding: clamp(28px, 5vw, 40px) clamp(22px, 4vw, 32px);
+  text-align: center;
+  background: color-mix(in srgb, var(--el-bg) 78%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 28px 56px -32px rgba(50,28,18,.34);
+  transition: transform .6s var(--elm-ease), box-shadow .6s var(--elm-ease);
+}
+.elm-gift:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 40px 70px -30px rgba(50,28,18,.4);
+}
+.elm-gift__qr-wrap { margin: 0; display: grid; gap: 12px; justify-items: center; }
+.elm-gift__qr {
+  width: min(168px, 52vw); height: min(168px, 52vw);
+  object-fit: contain; background: #fff; padding: 12px;
+  border: 1px solid var(--elm-line);
+  box-shadow: 0 16px 36px -22px rgba(50,28,18,.45);
+}
+.elm-gift__qr-caption {
+  font-family: var(--el-font-sans); font-size: 10px; font-weight: 500;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--el-muted);
+}
+.elm-gift__body { display: grid; gap: 8px; justify-items: center; width: 100%; }
+.elm-gift__bank { color: var(--el-accent); }
+.elm-gift__acc {
+  margin: 4px 0 0; font-family: var(--el-font-display); font-weight: 300;
+  font-size: clamp(22px, 5.2vw, 30px); letter-spacing: .08em; line-height: 1.2;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.elm-gift__owner {
+  margin: 0; font-family: var(--el-font-sans); font-size: 12px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--el-muted);
+}
+.elm-gift__actions { margin-top: 10px; }
+.elm-copy {
+  border: 1px solid var(--elm-line-strong); background: transparent;
+  padding: 10px 18px; border-radius: 999px;
+  font-family: var(--el-font-sans); font-size: 10px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--el-ink);
+  transition: background .35s var(--elm-ease), color .35s var(--elm-ease), border-color .35s var(--elm-ease);
+}
+.elm-copy:hover { background: var(--el-ink); color: var(--el-bg); border-color: var(--el-ink); }
+@media (min-width: 760px) {
+  .elm-gifts:not(.elm-gifts--single) { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
 
 /* RSVP */
 .elm-rsvp { display: grid; gap: 48px; }

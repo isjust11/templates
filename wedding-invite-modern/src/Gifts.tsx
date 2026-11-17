@@ -7,6 +7,12 @@ import { imageUrl, list, text, type GiftItem } from './fields';
 import Reveal, { LineReveal } from './Reveal';
 import Garden from './Garden';
 
+function formatAccount(value: string) {
+  const digits = value.replace(/\s+/g, '');
+  if (!/^\d+$/.test(digits) || digits.length < 8) return value.trim();
+  return digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+}
+
 function CopyButton({ value }: { value: string }) {
   const { t } = useModern();
   const [copied, setCopied] = useState(false);
@@ -20,7 +26,7 @@ function CopyButton({ value }: { value: string }) {
           setCopied(true);
           window.setTimeout(() => setCopied(false), 1800);
         } catch {
-          // Clipboard blocked (insecure context / in-app browser) — the number is still visible.
+          // Clipboard may be blocked; number remains visible.
         }
       }}
     >
@@ -29,10 +35,26 @@ function CopyButton({ value }: { value: string }) {
   );
 }
 
+type ResolvedGift = {
+  bank: string;
+  owner: string;
+  account: string;
+  qr: string;
+};
+
 export default function Gifts() {
   const { data, t } = useModern();
   const [open, setOpen] = useState(false);
-  const gifts = list<GiftItem>(data.gifts).filter((g) => text(g?.accountNumber));
+
+  const gifts: ResolvedGift[] = list<GiftItem>(data.gifts)
+    .map((g) => ({
+      bank: text(g?.bank),
+      owner: text(g?.owner),
+      account: text(g?.accountNumber),
+      qr: imageUrl(g?.qrImage),
+    }))
+    .filter((g) => g.account || g.qr);
+
   if (!gifts.length) return null;
 
   return (
@@ -45,11 +67,15 @@ export default function Gifts() {
             <LineReveal>{t.gifts}</LineReveal>
           </h2>
         </div>
+
         <Reveal>
-          <p className="elm-muted" style={{ margin: '0 auto 32px', maxWidth: 520 }}>
-            {t.giftsIntro}
-          </p>
-          <button type="button" className="elm-btn elm-btn--ghost" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+          <p className="elm-muted elm-gifts__intro">{t.giftsIntro}</p>
+          <button
+            type="button"
+            className="elm-btn elm-btn--ghost"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
             {open ? t.hideGifts : t.showGifts}
           </button>
         </Reveal>
@@ -60,25 +86,36 @@ export default function Gifts() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
               style={{ overflow: 'hidden' }}
             >
-              <div className="elm-gifts">
+              <div className={`elm-gifts${gifts.length === 1 ? ' elm-gifts--single' : ''}`}>
                 {gifts.map((g, i) => {
-                  const qr = imageUrl(g.qrImage);
-                  const account = text(g.accountNumber);
+                  const displayAcc = formatAccount(g.account);
                   return (
-                    <div key={i} className="elm-gift" style={qr ? undefined : { gridTemplateColumns: '1fr' }}>
-                      {qr ? <img className="elm-gift__qr" src={qr} alt={`QR ${text(g.bank)}`} loading="lazy" /> : null}
-                      <div style={{ display: 'grid', gap: 4 }}>
-                        <span className="elm-eyebrow">{text(g.bank)}</span>
-                        <span className="elm-gift__acc">{account}</span>
-                        <span>{text(g.owner)}</span>
-                        <div style={{ marginTop: 6 }}>
-                          <CopyButton value={account} />
-                        </div>
+                    <Reveal key={`${g.bank}-${g.account}-${i}`} className="elm-gift" delay={i * 0.08}>
+                      {g.qr ? (
+                        <figure className="elm-gift__qr-wrap">
+                          <img className="elm-gift__qr" src={g.qr} alt={`QR ${g.bank || g.owner}`} loading="lazy" />
+                          <figcaption className="elm-gift__qr-caption">{t.scanQr}</figcaption>
+                        </figure>
+                      ) : null}
+
+                      <div className="elm-gift__body">
+                        {g.bank ? <span className="elm-eyebrow elm-gift__bank">{g.bank}</span> : null}
+                        {displayAcc ? (
+                          <p className="elm-gift__acc" aria-label={g.account}>
+                            {displayAcc}
+                          </p>
+                        ) : null}
+                        {g.owner ? <p className="elm-gift__owner">{g.owner}</p> : null}
+                        {g.account ? (
+                          <div className="elm-gift__actions">
+                            <CopyButton value={g.account} />
+                          </div>
+                        ) : null}
                       </div>
-                    </div>
+                    </Reveal>
                   );
                 })}
               </div>

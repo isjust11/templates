@@ -84,12 +84,14 @@
     {
       "owner": "NGUYEN HOANG NAM",
       "bank": "Vietcombank",
-      "accountNumber": "0123 4567 8910"
+      "accountNumber": "0123 4567 8910",
+      "qrImage": ""
     },
     {
       "owner": "LE MINH ANH",
       "bank": "Techcombank",
-      "accountNumber": "1903 5555 6666"
+      "accountNumber": "1903 5555 6666",
+      "qrImage": ""
     }
   ],
   "rsvpDeadline": "01.12.2026",

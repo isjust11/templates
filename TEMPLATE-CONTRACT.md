@@ -40,19 +40,18 @@ Sau này publish GitHub:
 "@eventlab/template-floral-wedding": "github:org/floral-wedding#main"
 ```
 
-`next.config.ts` → thêm vào `transpilePackages`.
+Sau `npm install`, chạy (hoặc để `predev` / `prebuild` tự chạy):
 
-`wedding-invite/components/base/template-registry.tsx`:
-
-```ts
-import Floral from '@eventlab/template-floral-wedding';
-
-export const TEMPLATE_REGISTRY = {
-  'wedding-basic': WeddingBasic,
-  'wedding-invite2': WeddingInvite2,
-  'floral-wedding': Floral, // id phải trùng eventlab.template.json
-};
+```bash
+npm run generate:templates --workspace=wedding-invite
 ```
+
+Script quét deps `@eventlab/template-*`, đọc `eventlab.template.json`, sinh:
+
+- `wedding-invite/components/base/template-registry.generated.tsx`
+- `wedding-invite/components/base/template-packages.generated.json` (`transpilePackages`)
+
+Không sửa tay registry / `next.config` khi thêm template.
 
 Nest: template published `slug = floral-wedding` + `variablesSchema` từ `slots.schema.json`. Event gán template đó → `GET /public/events/:slug` trả `templateId: "floral-wedding"` → cùng URL `/invite/:slug`.
 
