@@ -7,6 +7,9 @@
     "bgSoft": "#ebe4d8",
     "effectConfetti": true,
     "effectEnvelope": true,
+    "effectPetals": true,
+    "effectHearts": true,
+    "autoScroll": false,
     "musicEnabled": false
   },
   "coverImage": "https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80",

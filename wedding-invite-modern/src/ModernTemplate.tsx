@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, MotionConfig, motion, useScroll, useSpring } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoScroll, useConfettiPlayer, useInviteMusic } from '@eventlab/effects';
 import { ModernProvider, useLowPower, type ModernContextValue } from './context';
 import { dictFor, parseEventDate, resolveLocale, text, type ModernEventData } from './fields';
@@ -112,6 +112,31 @@ export default function ModernTemplate({
     setOpened(true);
     window.setTimeout(playConfetti, 300);
   }, [playConfetti]);
+
+  // Live preview / theme without envelope: still play intro effects once content is shown.
+  const introPlayed = useRef(false);
+  useEffect(() => {
+    if (isEditing || effects.gate || !opened || introPlayed.current) return;
+    introPlayed.current = true;
+    const timer = window.setTimeout(() => {
+      playConfetti();
+      if (effects.hearts) setHeartBurst((n) => n + 1);
+    }, 450);
+    return () => window.clearTimeout(timer);
+  }, [isEditing, effects.gate, effects.hearts, opened, playConfetti]);
+
+  // Turning envelope off in the editor should reveal the invite (don't stay stuck on the gate).
+  useEffect(() => {
+    if (isEditing) {
+      setOpened(true);
+      setRevealed(true);
+      return;
+    }
+    if (!effects.gate) {
+      setOpened(true);
+      setRevealed(true);
+    }
+  }, [effects.gate, isEditing]);
 
   const floaters = !lowPower && (effects.hearts || effects.petals);
 

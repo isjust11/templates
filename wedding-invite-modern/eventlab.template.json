@@ -3,5 +3,7 @@
   "name": "Wedding Invite Modern",
   "entry": "./src/index.tsx",
   "schema": "./slots.schema.json",
-  "defaultExport": "React component receiving { data }"
+  "sample": "./sample.json",
+  "defaultExport": "React component receiving { data }",
+  "notes": "slots.schema.json uses admin data shape under `data` (type/labelVi/required/enabled/value). sample.json is the flat value map for package demos."
 }
