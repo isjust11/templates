@@ -21,11 +21,10 @@ export default function RsvpForm({ eventSlug }: { eventSlug?: string }) {
       if (!eventSlug) {
         throw new Error('Thiếu thông tin sự kiện. Mở thiệp qua /invite/[slug].');
       }
-      const res = await fetch('/api/rsvp', {
+      const res = await fetch(`/api/events/${encodeURIComponent(eventSlug)}/rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug: eventSlug,
           name: formData.name,
           attending: formData.attending === 'yes',
           guests: parseInt(formData.guests.toString(), 10) || 1,

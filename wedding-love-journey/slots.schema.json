@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeddingLoveJourneyTemplateSlots",
+  "description": "Typed data contract for wedding-love-journey (sage botanical single-column invite)",
+  "type": "object",
+  "required": ["brideName", "groomName", "eventDate", "venue"],
+  "properties": {
+    "theme": {
+      "type": "object",
+      "description": "Global skin → CSS vars --el-* (colors, fonts) + effect flags",
+      "slot": "theme.root",
+      "properties": {
+        "accent": { "type": "string", "description": "Sage green for titles and the ampersand" },
+        "accentSoft": { "type": "string", "description": "Pale green panels (dear, RSVP)" },
+        "ink": { "type": "string" },
+        "muted": { "type": "string" },
+        "bg": { "type": "string" },
+        "bgSoft": { "type": "string", "description": "Page backdrop around the column on wide screens" },
+        "onAccent": { "type": "string" },
+        "cta": { "type": "string", "description": "Burgundy button color" },
+        "fontDisplay": { "type": "string" },
+        "fontScript": { "type": "string" },
+        "fontBody": { "type": "string" },
+        "fontSans": { "type": "string" },
+        "fontRound": { "type": "string", "description": "Rounded face for the date on the cover photo" }
+      }
+    },
+    "coverImage": { "type": "string", "slot": "image.cover" },
+    "groomName": { "type": "string", "slot": "text.groomName" },
+    "brideName": { "type": "string", "slot": "text.brideName" },
+    "eventDate": { "type": "string", "format": "date-time", "slot": "datetime.eventDate" },
+    "eventDateDisplay": {
+      "type": "string",
+      "slot": "text.eventDateDisplay",
+      "description": "Overrides the date line on the cover, e.g. 'Thứ 3, Ngày 24 tháng 11, 2026'"
+    },
+    "venue": { "type": "string", "slot": "text.venue" },
+    "address": { "type": "string", "slot": "text.address" },
+    "mapsUrl": { "type": "string", "slot": "url.maps" },
+    "greeting": { "type": "string", "slot": "text.greeting", "description": "Script word above the invitation, default 'dear.'" },
+    "welcomeLines": { "type": "array", "items": { "type": "string" }, "slot": "text.welcomeLines" },
+    "groomPhoto": { "type": "string", "slot": "image.groom" },
+    "bridePhoto": { "type": "string", "slot": "image.bride" },
+    "coupleIntro": { "type": "string", "slot": "text.coupleIntro" },
+    "album": { "type": "array", "items": { "type": "string" }, "slot": "image.album" },
+    "videoUrl": { "type": "string", "slot": "url.video", "description": "YouTube link (watch, youtu.be or embed)" },
+    "gifts": {
+      "type": "array",
+      "slot": "list.gifts",
+      "items": {
+        "type": "object",
+        "required": ["owner", "bank", "accountNumber"],
+        "properties": {
+          "owner": { "type": "string" },
+          "bank": { "type": "string" },
+          "accountNumber": { "type": "string" },
+          "qrImage": { "type": "string" }
+        }
+      }
+    },
+    "rsvpDeadline": { "type": "string", "slot": "text.rsvpDeadline" },
+    "footerMessage": { "type": "string", "slot": "text.footerMessage" },
+    "locale": { "type": "string", "slot": "text.locale", "description": "vi-VN (default) or en-US" }
+  }
+}

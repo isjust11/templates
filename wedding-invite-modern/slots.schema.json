@@ -1,0 +1,416 @@
+{
+  "title": "WeddingInviteModernTemplateSlots",
+  "description": "Admin-importable slot contract + sample values for wedding-invite-modern. Import via Template → Import schema (JSON). Each field: type, labelVi/labelEn, required, enabled, value, optional itemSchema/config.",
+  "data": {
+    "theme": {
+      "type": "THEME",
+      "labelVi": "Giao diện",
+      "labelEn": "Theme",
+      "required": false,
+      "enabled": true,
+      "value": {
+        "accent": "#8b5e45",
+        "accentSoft": "#d8c3b1",
+        "ink": "#1f1c19",
+        "muted": "#6f655c",
+        "bg": "#f5f1ea",
+        "bgSoft": "#ebe4d8",
+        "onAccent": "#f9f6f1",
+        "fontDisplay": "\"Playfair Display\", \"Times New Roman\", serif",
+        "fontScript": "\"Great Vibes\", \"Playfair Display\", cursive",
+        "fontBody": "\"Be Vietnam Pro\", system-ui, sans-serif",
+        "fontSans": "\"Be Vietnam Pro\", system-ui, sans-serif",
+        "effectConfetti": true,
+        "effectEnvelope": true,
+        "effectPetals": true,
+        "effectHearts": true,
+        "autoScroll": false,
+        "musicEnabled": false
+      },
+      "config": { "display": "1" }
+    },
+    "coverImage": {
+      "type": "IMAGE",
+      "labelVi": "Ảnh bìa",
+      "labelEn": "Cover image",
+      "placeHolder": "https://…",
+      "required": false,
+      "enabled": true,
+      "value": "https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80",
+      "config": { "display": "1" }
+    },
+    "groomName": {
+      "type": "TEXT",
+      "labelVi": "Tên chú rể",
+      "labelEn": "Groom name",
+      "placeHolder": "VD: Hoàng Nam",
+      "required": true,
+      "enabled": true,
+      "value": "Hoàng Nam",
+      "config": { "display": "1" }
+    },
+    "brideName": {
+      "type": "TEXT",
+      "labelVi": "Tên cô dâu",
+      "labelEn": "Bride name",
+      "placeHolder": "VD: Minh Anh",
+      "required": true,
+      "enabled": true,
+      "value": "Minh Anh",
+      "config": { "display": "1" }
+    },
+    "eventDate": {
+      "type": "DATE",
+      "labelVi": "Ngày giờ tổ chức",
+      "labelEn": "Event date",
+      "placeHolder": "2026-12-20T17:30:00+07:00",
+      "required": true,
+      "enabled": true,
+      "value": "2026-12-20T17:30:00+07:00",
+      "config": { "display": "1" }
+    },
+    "eventDateDisplay": {
+      "type": "TEXT",
+      "labelVi": "Cách ghi ngày trên thiệp",
+      "labelEn": "Display date",
+      "placeHolder": "VD: Chủ nhật, 20 tháng 12, 2026",
+      "required": true,
+      "enabled": true,
+      "value": "Chủ nhật, 20 tháng 12, 2026",
+      "config": { "display": "1" }
+    },
+    "city": {
+      "type": "TEXT",
+      "labelVi": "Thành phố",
+      "labelEn": "City",
+      "placeHolder": "VD: TP. Hồ Chí Minh",
+      "required": true,
+      "enabled": true,
+      "value": "TP. Hồ Chí Minh",
+      "config": { "display": "1" }
+    },
+    "venue": {
+      "type": "TEXT",
+      "labelVi": "Nơi tổ chức",
+      "labelEn": "Venue",
+      "placeHolder": "VD: The Reverie Saigon",
+      "required": true,
+      "enabled": true,
+      "value": "The Reverie Saigon",
+      "config": { "display": "1" }
+    },
+    "address": {
+      "type": "TEXT",
+      "labelVi": "Địa chỉ",
+      "labelEn": "Address",
+      "placeHolder": "Số nhà, đường, phường, quận…",
+      "required": false,
+      "enabled": true,
+      "value": "22-36 Nguyễn Huệ, Quận 1",
+      "config": { "display": "1" }
+    },
+    "mapsUrl": {
+      "type": "URL",
+      "labelVi": "Link Google Maps",
+      "labelEn": "Maps URL",
+      "placeHolder": "https://maps.google.com/…",
+      "required": false,
+      "enabled": true,
+      "value": "",
+      "config": { "display": "1" }
+    },
+    "hosts": {
+      "type": "TEXT",
+      "labelVi": "Chủ trì",
+      "labelEn": "Hosts",
+      "placeHolder": "VD: Gia đình hai họ trân trọng báo tin",
+      "required": false,
+      "enabled": true,
+      "value": "Gia đình hai họ trân trọng báo tin",
+      "config": { "display": "1" }
+    },
+    "quote": {
+      "type": "TEXT",
+      "labelVi": "Câu quote",
+      "labelEn": "Quote",
+      "placeHolder": "Một câu ngắn trên thiệp…",
+      "required": false,
+      "enabled": true,
+      "value": "Hai tâm hồn, một nhịp đập — và một chặng đường mới bắt đầu.",
+      "config": { "display": "1" }
+    },
+    "welcomeLines": {
+      "type": "TEXT_ARRAY",
+      "labelVi": "Lời mời",
+      "labelEn": "Welcome lines",
+      "placeHolder": "Mỗi dòng một câu",
+      "required": false,
+      "enabled": true,
+      "value": [
+        "Tới dự buổi tiệc chung vui cùng gia đình chúng tôi",
+        "nhân ngày thành hôn của hai con.",
+        "Sự hiện diện của quý khách là niềm vinh hạnh lớn lao."
+      ],
+      "config": { "display": "1" }
+    },
+    "groomFather": {
+      "type": "TEXT",
+      "labelVi": "Bố nhà trai",
+      "labelEn": "Groom's father",
+      "required": false,
+      "enabled": true,
+      "value": "Ông Nguyễn Văn Hải",
+      "config": { "display": "1" }
+    },
+    "groomMother": {
+      "type": "TEXT",
+      "labelVi": "Mẹ nhà trai",
+      "labelEn": "Groom's mother",
+      "required": false,
+      "enabled": true,
+      "value": "Bà Trần Thị Lan",
+      "config": { "display": "1" }
+    },
+    "groomAddress": {
+      "type": "TEXT",
+      "labelVi": "Địa chỉ nhà trai",
+      "labelEn": "Groom's address",
+      "required": false,
+      "enabled": true,
+      "value": "Quận 3, TP. Hồ Chí Minh",
+      "config": { "display": "1" }
+    },
+    "brideFather": {
+      "type": "TEXT",
+      "labelVi": "Bố nhà gái",
+      "labelEn": "Bride's father",
+      "required": false,
+      "enabled": true,
+      "value": "Ông Lê Minh Tuấn",
+      "config": { "display": "1" }
+    },
+    "brideMother": {
+      "type": "TEXT",
+      "labelVi": "Mẹ nhà gái",
+      "labelEn": "Bride's mother",
+      "required": false,
+      "enabled": true,
+      "value": "Bà Phạm Thu Hà",
+      "config": { "display": "1" }
+    },
+    "brideAddress": {
+      "type": "TEXT",
+      "labelVi": "Địa chỉ nhà gái",
+      "labelEn": "Bride's address",
+      "required": false,
+      "enabled": true,
+      "value": "Quận Ba Đình, Hà Nội",
+      "config": { "display": "1" }
+    },
+    "groomPhoto": {
+      "type": "IMAGE",
+      "labelVi": "Ảnh chú rể",
+      "labelEn": "Groom photo",
+      "required": false,
+      "enabled": true,
+      "value": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80",
+      "config": { "display": "1" }
+    },
+    "bridePhoto": {
+      "type": "IMAGE",
+      "labelVi": "Ảnh cô dâu",
+      "labelEn": "Bride photo",
+      "required": false,
+      "enabled": true,
+      "value": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80",
+      "config": { "display": "1" }
+    },
+    "groomBio": {
+      "type": "TEXT",
+      "labelVi": "Giới thiệu chú rể",
+      "labelEn": "Groom bio",
+      "required": false,
+      "enabled": true,
+      "value": "Kỹ sư phần mềm, mê cà phê đen và những chuyến đi không lên kế hoạch.",
+      "config": { "display": "1" }
+    },
+    "brideBio": {
+      "type": "TEXT",
+      "labelVi": "Giới thiệu cô dâu",
+      "labelEn": "Bride bio",
+      "required": false,
+      "enabled": true,
+      "value": "Kiến trúc sư, thích hoa cỏ, phim cũ và những buổi chiều mưa Sài Gòn.",
+      "config": { "display": "1" }
+    },
+    "story": {
+      "type": "ARRAY",
+      "labelVi": "Chuyện tình",
+      "labelEn": "Our story",
+      "required": false,
+      "enabled": true,
+      "itemSchema": {
+        "date": { "type": "TEXT", "labelVi": "Thời điểm", "labelEn": "Date" },
+        "title": { "type": "TEXT", "labelVi": "Tiêu đề", "labelEn": "Title" },
+        "description": { "type": "TEXT", "labelVi": "Mô tả", "labelEn": "Description" },
+        "image": { "type": "IMAGE", "labelVi": "Ảnh", "labelEn": "Image" }
+      },
+      "value": [
+        {
+          "date": "2019",
+          "title": "Lần đầu gặp gỡ",
+          "description": "Một buổi workshop mùa thu ở Đà Lạt, hai người ngồi cạnh nhau vì hết ghế.",
+          "image": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&q=80"
+        },
+        {
+          "date": "2022",
+          "title": "Về chung một nhà",
+          "description": "Căn hộ nhỏ với ban công đầy cây và một chú mèo tên Mochi."
+        },
+        {
+          "date": "2025",
+          "title": "Lời cầu hôn",
+          "description": "Hội An, đêm rằm, giữa những chiếc đèn lồng.",
+          "image": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=900&q=80"
+        }
+      ],
+      "config": { "display": "1" }
+    },
+    "events": {
+      "type": "ARRAY",
+      "labelVi": "Lịch trình",
+      "labelEn": "Events",
+      "required": false,
+      "enabled": true,
+      "itemSchema": {
+        "label": { "type": "TEXT", "labelVi": "Tên sự kiện", "labelEn": "Label" },
+        "time": { "type": "TEXT", "labelVi": "Giờ", "labelEn": "Time" },
+        "dateDisplay": { "type": "TEXT", "labelVi": "Ngày hiển thị", "labelEn": "Display date" },
+        "venue": { "type": "TEXT", "labelVi": "Địa điểm", "labelEn": "Venue" },
+        "address": { "type": "TEXT", "labelVi": "Địa chỉ", "labelEn": "Address" },
+        "mapsUrl": { "type": "URL", "labelVi": "Link Maps", "labelEn": "Maps URL" }
+      },
+      "value": [
+        {
+          "label": "Lễ vu quy",
+          "time": "09:00",
+          "dateDisplay": "Chủ nhật, 20.12.2026",
+          "venue": "Tư gia nhà gái",
+          "address": "Quận Ba Đình, Hà Nội"
+        },
+        {
+          "label": "Tiệc cưới",
+          "time": "17:30",
+          "dateDisplay": "Chủ nhật, 20.12.2026",
+          "venue": "The Reverie Saigon",
+          "address": "22-36 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh"
+        }
+      ],
+      "config": { "display": "1" }
+    },
+    "album": {
+      "type": "ARRAY",
+      "labelVi": "Album ảnh",
+      "labelEn": "Album",
+      "required": false,
+      "enabled": true,
+      "itemSchema": {
+        "url": { "type": "IMAGE", "labelVi": "Ảnh", "labelEn": "Photo" }
+      },
+      "value": [
+        { "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80" },
+        { "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=900&q=80" },
+        { "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=900&q=80" },
+        { "url": "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=900&q=80" },
+        { "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=80" },
+        { "url": "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=900&q=80" }
+      ],
+      "config": { "display": "1" }
+    },
+    "dressCodeNote": {
+      "type": "TEXT",
+      "labelVi": "Ghi chú trang phục",
+      "labelEn": "Dress code note",
+      "required": false,
+      "enabled": true,
+      "value": "Tông trung tính & đất — be, nâu mocha, xanh olive.",
+      "config": { "display": "1" }
+    },
+    "dressCodeColors": {
+      "type": "TEXT_ARRAY",
+      "labelVi": "Màu trang phục",
+      "labelEn": "Dress code colors",
+      "placeHolder": "#efe6da",
+      "required": false,
+      "enabled": true,
+      "value": ["#efe6da", "#c9b29b", "#8b5e45", "#5f6b4e", "#2b2724"],
+      "config": { "display": "1" }
+    },
+    "gifts": {
+      "type": "ARRAY",
+      "labelVi": "Mừng cưới",
+      "labelEn": "Gifts",
+      "required": false,
+      "enabled": true,
+      "itemSchema": {
+        "owner": { "type": "TEXT", "labelVi": "Chủ tài khoản", "labelEn": "Owner" },
+        "bank": { "type": "TEXT", "labelVi": "Ngân hàng", "labelEn": "Bank" },
+        "accountNumber": { "type": "TEXT", "labelVi": "Số tài khoản", "labelEn": "Account number" },
+        "qrImage": { "type": "IMAGE", "labelVi": "Mã QR", "labelEn": "QR image" }
+      },
+      "value": [
+        {
+          "owner": "NGUYEN HOANG NAM",
+          "bank": "Vietcombank",
+          "accountNumber": "0123 4567 8910",
+          "qrImage": ""
+        },
+        {
+          "owner": "LE MINH ANH",
+          "bank": "Techcombank",
+          "accountNumber": "1903 5555 6666",
+          "qrImage": ""
+        }
+      ],
+      "config": { "display": "1" }
+    },
+    "rsvpDeadline": {
+      "type": "TEXT",
+      "labelVi": "Hạn RSVP",
+      "labelEn": "RSVP deadline",
+      "placeHolder": "VD: 01.12.2026",
+      "required": false,
+      "enabled": true,
+      "value": "01.12.2026",
+      "config": { "display": "1" }
+    },
+    "footerMessage": {
+      "type": "TEXT",
+      "labelVi": "Lời cảm ơn cuối thiệp",
+      "labelEn": "Footer message",
+      "required": false,
+      "enabled": true,
+      "value": "Cảm ơn bạn đã là một phần trong câu chuyện của chúng mình.",
+      "config": { "display": "1" }
+    },
+    "footerCredit": {
+      "type": "TEXT",
+      "labelVi": "Dòng credit",
+      "labelEn": "Footer credit",
+      "required": false,
+      "enabled": false,
+      "value": "Made with EventLab",
+      "config": { "display": "0" }
+    },
+    "locale": {
+      "type": "TEXT",
+      "labelVi": "Ngôn ngữ",
+      "labelEn": "Locale",
+      "placeHolder": "vi-VN",
+      "required": false,
+      "enabled": true,
+      "value": "vi-VN",
+      "config": { "display": "1" }
+    }
+  }
+}

@@ -4,17 +4,21 @@ import { motion } from 'framer-motion';
 import { useTemplateData } from './TemplateDataProvider';
 import InlineSlotEditor from './InlineSlotEditor';
 import { getFieldValue, getFieldStyle } from './types';
+import { readInviteEffects } from './theme';
+import { PetalField } from '@eventlab/effects';
 
 export default function Hero() {
-  const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } =
-    useTemplateData();
+  const data = useTemplateData();
+  const { brideName, groomName, eventDateDisplay, city, venue, backgroundImage } = data;
+  const effects = readInviteEffects(data);
 
   return (
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-4 overflow-hidden"
       style={{
-        background: 'radial-gradient(ellipse at 60% 0%, #ffc9d9 0%, #fff0f4 40%, #fff5f7 70%, #ffffff 100%)',
+        background:
+          'radial-gradient(ellipse at 60% 0%, var(--el-accent-soft) 0%, var(--el-bg-soft) 42%, var(--el-bg) 100%)',
       }}
     >
       {/* Background image layer */}
@@ -52,25 +56,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Glass petals decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: [0, 0.6, 0], scale: [0.5, 1, 0.5], y: [-20, 20, -20] }}
-            transition={{ duration: 6 + i, repeat: Infinity, delay: i * 1.2, ease: 'easeInOut' }}
-            className="absolute text-petal-300"
-            style={{
-              left: `${10 + i * 15}%`,
-              top: `${15 + (i % 3) * 25}%`,
-              fontSize: `${14 + (i % 3) * 8}px`,
-            }}
-          >
-            ✿
-          </motion.div>
-        ))}
-      </div>
+      <PetalField enabled={effects.petals} color="var(--el-petal-300, var(--el-accent-soft))" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div

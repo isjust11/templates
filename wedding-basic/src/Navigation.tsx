@@ -32,7 +32,7 @@ export default function Navigation() {
       style={
         scrolled
           ? {
-              background: 'rgba(255,250,252,0.75)',
+              background: 'var(--el-nav-bg, rgba(255,250,252,0.75))',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               borderBottom: '1px solid rgba(255,180,200,0.25)',

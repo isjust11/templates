@@ -1,5 +1,6 @@
 'use client';
 
+import Gifts from './Gifts';
 import ThemeRoot from './ThemeRoot';
 import type { TemplateEventData } from './types';
 
@@ -24,7 +25,9 @@ export default function WeddingInvite2Template({
   eventSlug?: string;
 }) {
   const data = asData(raw);
-  const isVi = (data.locale || 'vi').startsWith('vi');
+  const locale = fieldText((data as Record<string, unknown>).locale) || 'vi';
+  const isVi = !locale.toLowerCase().startsWith('en');
+  const quote = fieldText((data as Record<string, unknown>).quote);
 
   return (
     <ThemeRoot data={data as Record<string, unknown>}>
@@ -62,10 +65,12 @@ export default function WeddingInvite2Template({
           </p>
         </section>
 
-        <section className="mx-auto max-w-2xl px-6 pb-28 text-center">
-          <blockquote className="font-serif text-2xl italic leading-relaxed md:text-3xl" style={{ color: 'var(--el-ink)' }}>
-            “{fieldText((data as any).quote)}”
-          </blockquote>
+        <section className="mx-auto max-w-2xl px-6 pb-20 text-center">
+          {quote ? (
+            <blockquote className="font-serif text-2xl italic leading-relaxed md:text-3xl" style={{ color: 'var(--el-ink)' }}>
+              “{quote}”
+            </blockquote>
+          ) : null}
           {fieldText(data.hosts) ? (
             <p className="mt-10 text-sm uppercase tracking-[0.25em]" style={{ color: 'var(--el-muted)' }}>
               {fieldText(data.hosts)}
@@ -83,6 +88,8 @@ export default function WeddingInvite2Template({
             </a>
           ) : null}
         </section>
+
+        <Gifts gifts={(data as Record<string, unknown>).gifts} isVi={isVi} />
       </main>
     </ThemeRoot>
   );

@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.tsx",
     "./schema": "./slots.schema.json",
+    "./slots.schema.json": "./slots.schema.json",
     "./eventlab.template.json": "./eventlab.template.json"
   },
   "peerDependencies": {
