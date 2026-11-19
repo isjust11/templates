@@ -1,3 +1,10 @@
+export type GiftItem = {
+  owner?: string;
+  bank?: string;
+  accountNumber?: string;
+  qrImage?: string;
+};
+
 export type TemplateEventData = {
   brideName: string;
   groomName: string;
@@ -8,5 +15,6 @@ export type TemplateEventData = {
   hosts?: string;
   mapsUrl?: string;
   quote: string;
+  gifts?: GiftItem[] | { type?: string; value?: GiftItem[] };
   locale?: string;
 };

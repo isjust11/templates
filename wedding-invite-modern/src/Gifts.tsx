@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useModern } from './context';
-import { imageUrl, list, text, type GiftItem } from './fields';
+import { imageUrl, isFieldVisible, list, text, type GiftItem } from './fields';
 import Reveal, { LineReveal } from './Reveal';
 import Garden from './Garden';
 
@@ -42,18 +42,27 @@ type ResolvedGift = {
   qr: string;
 };
 
+/** Landing / admin may use slightly different item keys — normalize to one shape. */
+function resolveGift(raw: GiftItem | Record<string, unknown> | null | undefined): ResolvedGift {
+  const g = (raw || {}) as Record<string, unknown>;
+  return {
+    bank: text(g.bank) || text(g.bankName),
+    owner: text(g.owner),
+    account: text(g.accountNumber) || text(g.account),
+    qr: imageUrl(g.qrImage) || imageUrl(g.qr) || imageUrl(g.qrUrl),
+  };
+}
+
+/** Wedding gifts / bank transfer — driven by `data.gifts` ARRAY slot. */
 export default function Gifts() {
   const { data, t } = useModern();
   const [open, setOpen] = useState(false);
 
+  if (!isFieldVisible(data.gifts)) return null;
+
   const gifts: ResolvedGift[] = list<GiftItem>(data.gifts)
-    .map((g) => ({
-      bank: text(g?.bank),
-      owner: text(g?.owner),
-      account: text(g?.accountNumber),
-      qr: imageUrl(g?.qrImage),
-    }))
-    .filter((g) => g.account || g.qr);
+    .map(resolveGift)
+    .filter((g) => g.account || g.qr || g.owner || g.bank);
 
   if (!gifts.length) return null;
 
@@ -93,9 +102,10 @@ export default function Gifts() {
                 {gifts.map((g, i) => {
                   const displayAcc = formatAccount(g.account);
                   return (
-                    <Reveal key={`${g.bank}-${g.account}-${i}`} className="elm-gift" delay={i * 0.08}>
+                    <Reveal key={`${g.bank}-${g.account}-${g.owner}-${i}`} className="elm-gift" delay={i * 0.08}>
                       {g.qr ? (
                         <figure className="elm-gift__qr-wrap">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img className="elm-gift__qr" src={g.qr} alt={`QR ${g.bank || g.owner}`} loading="lazy" />
                           <figcaption className="elm-gift__qr-caption">{t.scanQr}</figcaption>
                         </figure>

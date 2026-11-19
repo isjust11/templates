@@ -32,10 +32,17 @@ export function useJourney(): JourneyContextValue {
 export function useLowPower(): boolean {
   const [low, setLow] = useState(false);
   useEffect(() => {
+    const path = window.location.pathname || '';
+    if (path.startsWith('/preview') || path.startsWith('/template/')) {
+      setLow(false);
+      return;
+    }
     const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData = nav.connection?.saveData === true;
-    const weak = (nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2;
+    const cores = nav.hardwareConcurrency ?? 8;
+    const mem = nav.deviceMemory ?? 8;
+    const weak = cores <= 2 && mem <= 2;
     setLow(reduced || saveData || weak);
   }, []);
   return low;

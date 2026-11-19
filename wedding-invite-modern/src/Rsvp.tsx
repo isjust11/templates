@@ -39,15 +39,14 @@ export default function Rsvp({ guestName }: { guestName: string }) {
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/rsvp', {
+      const res = await fetch(`/api/events/${encodeURIComponent(eventSlug)}/rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug: eventSlug,
           name: name.trim(),
           attending,
           guests: attending ? guests : 0,
-          message: message.trim() || undefined,
+          note: message.trim() || undefined,
         }),
       });
       const body = await res.json().catch(() => ({}));

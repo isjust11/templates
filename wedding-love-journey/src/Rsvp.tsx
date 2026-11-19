@@ -34,13 +34,17 @@ export default function Rsvp({ guestName }: { guestName: string }) {
     }
     setStatus('sending');
     try {
-      const res = await fetch('/api/rsvp', {
+      const res = await fetch(`/api/events/${encodeURIComponent(eventSlug)}/rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: eventSlug, name: name.trim(), attending, guests: attending ? guests : 0 }),
+        body: JSON.stringify({
+          name: name.trim(),
+          attending,
+          guests: attending ? guests : 0,
+        }),
       });
       const body = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(body?.error || t.errorGeneric);
+      if (!res.ok) throw new Error(body?.error || body?.message || t.errorGeneric);
       setStatus('done');
     } catch (err) {
       setStatus('error');

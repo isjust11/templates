@@ -131,6 +131,13 @@ export function fieldStyle(field: unknown): CSSProperties {
   };
 }
 
+/** `config.display` / enabled — hide whole sections when admin turns the slot off. */
+export function isFieldVisible(field: unknown): boolean {
+  if (!isWrapped(field) || !field.config) return true;
+  const display = field.config.display;
+  return display !== '0' && display !== 'false';
+}
+
 export function parseEventDate(field: unknown): Date | null {
   const raw = text(field);
   if (!raw) return null;

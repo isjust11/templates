@@ -34,10 +34,20 @@ export function useModern(): ModernContextValue {
 export function useLowPower(): boolean {
   const [low, setLow] = useState(false);
   useEffect(() => {
+    const path = window.location.pathname || '';
+    // Admin live preview + catalog demos should always show particle effects.
+    if (path.startsWith('/preview') || path.startsWith('/template/')) {
+      setLow(false);
+      return;
+    }
     const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData = nav.connection?.saveData === true;
-    const weak = (nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2;
+    // Chrome buckets deviceMemory to 0.5/1/2/4/8 — `2` alone is common mid-tier, not "weak".
+    // Only skip particles when both CPU and memory signals are clearly constrained.
+    const cores = nav.hardwareConcurrency ?? 8;
+    const mem = nav.deviceMemory ?? 8;
+    const weak = cores <= 2 && mem <= 2;
     setLow(reduced || saveData || weak);
   }, []);
   return low;
